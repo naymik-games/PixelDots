@@ -45,6 +45,11 @@ class playGame extends Phaser.Scene {
     this.allowBomb = levelConfig.aB
     this.bombStartCount = levelConfig.bS
     this.bombGoal = levelConfig.bG
+    this.allowIce = levelConfig.aI
+    this.iceStartCount = levelConfig.iS
+    this.iceGoal = levelConfig.iG
+    this.allowBlock = levelConfig.aBl
+    this.blockStartCount = levelConfig.blS
     this.allowSquares = levelConfig.square
 
     let dotAllColors = colorGroups[gameSettings.colorSet]
@@ -291,6 +296,49 @@ class playGame extends Phaser.Scene {
         }
       }
     }
+    if (this.allowIce) {
+      var placed = 0
+      while (placed < this.iceStartCount) {
+        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
+        var randY = Phaser.Math.Between(0, this.boardHeight - 1)
+        if (this.board.overlay[randX][randY].type == 0) {
+          this.board.overlay[randX][randY].selectable = false
+          this.board.overlay[randX][randY].strength = 3
+          this.board.overlay[randX][randY].type = 3
+          let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
+          let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
+          var ice = this.add.image(xpos, ypos, 'ice', 3)
+          ice.displayWidth = this.spriteSize
+          ice.displayHeight = this.spriteSize
+          this.board.overlay[randX][randY].image = ice
+
+          placed++
+        }
+      }
+    }
+    if (this.allowBlock) {
+      var placed = 0
+      while (placed < this.blockStartCount) {
+        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
+        var randY = Phaser.Math.Between(0, this.boardHeight - 1)
+        if (this.board.overlay[randX][randY].type == 0) {
+          this.board.overlay[randX][randY].selectable = false
+
+          this.board.overlay[randX][randY].type = 4
+          let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
+          let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
+          var block = this.add.image(xpos, ypos, 'block')
+          block.displayWidth = this.spriteSize
+          block.displayHeight = this.spriteSize
+          this.board.overlay[randX][randY].image = block
+
+          placed++
+        }
+      }
+    }
+
+
+
     for (var i = 0; i < this.boardHeight; i++) {
       for (var j = 0; j < this.boardWidth; j++) {
         // var xpos = i*64 + 160;

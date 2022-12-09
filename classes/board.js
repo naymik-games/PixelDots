@@ -4,6 +4,7 @@ class Board {
     this.height = height
     this.scene = scene
     this.dots = [];
+    this.overlay = []
     this.idCount = 0
     this.selectedColor = null
     this.selectedDots = []
@@ -11,7 +12,7 @@ class Board {
     this.numColors = numColors
     this.redrawTheseColumns = {};
     this.colorTally = [0, 0, 0, 0, 0, 0]
-    this.specialTally = [0, 0, 0]
+    this.specialTally = [0, 0, 0, 0]
     this.moves = 0
     this.squareTally = 0
     this.newDots = []
@@ -31,12 +32,14 @@ class Board {
   makeColumn(xAxis) {
 
     var column = [];
+    var columnOverlay = []
     for (var yAxis = 0; yAxis < this.height; yAxis++) {
       var dot = this.addDot(xAxis, yAxis);
       column.push(dot);
-
+      columnOverlay.push({ coordinates: [xAxis, yAxis], image: null, type: 0, strength: 3, color: 8 })
     }
     this.dots.push(column);
+    this.overlay.push(columnOverlay)
 
   };
   addDot(x, y) {
@@ -84,7 +87,22 @@ class Board {
     this.selectedColor = "none";
     this.redrawTheseColumns = {};
   }
+  ///////OVERLAY
+  checkIce(coordinates) {
+    if (this.overlay[coordinates[0]][coordinates[1]].type == 3) {
+      console.log('ice ice baby')
+      if (this.overlay[coordinates[0]][coordinates[1]].strength > 0) {
+        this.overlay[coordinates[0]][coordinates[1]].strength--
 
+
+      } else {
+        this.overlay[coordinates[0]][coordinates[1]].type = 0
+        this.specialTally[3]++
+      }
+      this.overlay[coordinates[0]][coordinates[1]].image.setFrame(this.overlay[coordinates[0]][coordinates[1]].strength)
+    }
+
+  }
 
   ///////REMOVING
   destroyDots() {
@@ -222,7 +240,7 @@ class Board {
     return x >= 0 && y >= 0 && x < this.width && y < this.height;
   }
   validDrag(dot) {
-    return this.rightColor(dot) && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.canSelectDot(dot);
+    return this.rightColor(dot) && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.canSelectDot(dot) && this.notBlocked(dot);
   }
 
   rightColor(dot) {
@@ -230,6 +248,12 @@ class Board {
   }
   canSelectDot(dot) {
     return dot.selectable
+  }
+  notBlocked(dot) {
+    if (this.overlay[dot.coordinates[0]][dot.coordinates[1]].type == 4) {
+      return false
+    }
+    return true
   }
   isNeighbor(dot) {
     var neighbors = this.lastSelectedDot().neighbors();

@@ -50,7 +50,7 @@ class startGame extends Phaser.Scene {
     levelConfig = {
       w: 6,
       h: 6,
-      mL: 10,
+      mL: 30,
       c: 5,
       aD: false,
       dS: 5,
@@ -58,6 +58,9 @@ class startGame extends Phaser.Scene {
       aB: false,
       bS: 5,
       bG: 5,
+      aI: false,
+      iS: 5,
+      iG: 5,
       square: true
     }
     gameMode = 0
@@ -76,6 +79,11 @@ class startGame extends Phaser.Scene {
       aB: false,
       bS: 5,
       bG: 5,
+      aI: false,
+      iS: 5,
+      iG: 5,
+      aBl: false,
+      blS: 5,
       square: true
     }
     gameMode = 1
@@ -94,6 +102,11 @@ class startGame extends Phaser.Scene {
       aB: false,
       bS: 5,
       bG: 5,
+      aI: false,
+      iS: 5,
+      iG: 5,
+      aBl: false,
+      blS: 5,
       square: true
     }
     gameMode = 2
@@ -112,6 +125,11 @@ class startGame extends Phaser.Scene {
       aB: true,
       bS: 5,
       bG: 5,
+      aI: false,
+      iS: 5,
+      iG: 5,
+      aBl: false,
+      blS: 5,
       square: true
     }
     gameMode = 3
@@ -120,3 +138,5 @@ class startGame extends Phaser.Scene {
   }
 
 }
+
+

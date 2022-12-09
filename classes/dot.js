@@ -46,6 +46,9 @@ class Dot {
       this.strength--
       this.image.setFrame(this.strength)
     }
+    if (levelConfig.aI) {
+      this.board.checkIce(this.coordinates)
+    }
   }
   destroy() {
     if (this.strength == 0) {
@@ -65,6 +68,7 @@ class Dot {
       this.image.setAlpha(1)
     }
   }
+
   redrawThisColumn() {
     var x = this.coordinates[0];
     var y = this.coordinates[1];

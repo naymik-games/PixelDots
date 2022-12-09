@@ -100,6 +100,10 @@ class preloadGame extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 128
     });
+    this.load.spritesheet("ice", "assets/sprites/ice.png", {
+      frameWidth: 128,
+      frameHeight: 128
+    });
     this.load.spritesheet("mode_buttons", "assets/sprites/mode_button.png", {
       frameWidth: 300,
       frameHeight: 128
@@ -108,6 +112,7 @@ class preloadGame extends Phaser.Scene {
     this.load.image('dot2', 'assets/sprites/dot2.png');
     this.load.image('arrow', 'assets/sprites/arrow.png');
     this.load.image('playagain', 'assets/sprites/button_.png');
+    this.load.image('block', 'assets/sprites/block.png');
   }
   create() {
     this.scene.start("startGame");
