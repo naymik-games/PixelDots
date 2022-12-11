@@ -125,13 +125,13 @@ class startGame extends Phaser.Scene {
       aB: false,
       bS: 5,
       bG: 5,
-      aI: false,
+      aI: true,
       iS: 7,
       iG: 5,
       aBl: false,
       blS: 5,
       square: true,
-      win: { color0: 10, drop: 2 }//color2: 10, color3: 10, square: 10, drop: 7, ice: 3
+      win: { color0: 10, drop: 2, ice: 3 }//color2: 10, color3: 10, square: 10, drop: 7, ice: 3
     }
     gameMode = 3
     this.scene.start('playGame');

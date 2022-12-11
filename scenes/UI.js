@@ -25,7 +25,7 @@ class UI extends Phaser.Scene {
       this.goalText = this.add.text(125, 125, '/' + this.Main.moveLimit, { fontFamily: 'PixelFont', fontSize: '70px', color: '#F0B060', align: 'left' }).setOrigin(.5)
     }
 
-    this.squareText = this.add.text(850, 1600, '0', { fontFamily: 'PixelFont', fontSize: '100px', color: '#F0B060', align: 'left' }).setOrigin(1, .5).setAlpha(1)
+    //this.squareText1 = this.add.text(850, 1600, '0', { fontFamily: 'PixelFont', fontSize: '100px', color: '#F0B060', align: 'left' }).setOrigin(1, .5).setAlpha(1)
 
 
 
@@ -34,46 +34,50 @@ class UI extends Phaser.Scene {
       this.timeText = this.add.text(450, 115, this.formatTime(this.initialTime), { fontFamily: 'PixelFont', fontSize: '100px', color: '#F0B060', align: 'left' }).setOrigin(.5)
 
     }
-
+    /////////////////////////////// 
+    // BUTTONS FOR POWER UPS
     /////////////////////////////
-    var oneDotText = this.add.text(50, 1450, '1 DOT', { fontFamily: 'PixelFont', fontSize: '90px', color: '#ffffff', align: 'left' }).setOrigin(0, .5).setInteractive()
-    oneDotText.on('pointerdown', function () {
+    this.onDotText = this.add.text(50, 1450, '1 DOT', { fontFamily: 'PixelFont', fontSize: '90px', color: '#ffffff', align: 'left' }).setOrigin(0, .5).setInteractive()
+    this.onDotText.on('pointerdown', function () {
       if (this.Main.oneDot) {
-        oneDotText.setColor('#ffffff')
+        this.onDotText.setColor('#ffffff')
         this.Main.oneDot = false
       } else {
-        oneDotText.setColor('#ff0000')
+        this.onDotText.setColor('#ff0000')
         this.Main.oneDot = true
       }
     }, this)
-    var oneColorText = this.add.text(350, 1450, '1 COLOR', { fontFamily: 'PixelFont', fontSize: '90px', color: '#ffffff', align: 'left' }).setOrigin(0, .5).setInteractive()
-    oneColorText.on('pointerdown', function () {
+    this.oneColorTextd = this.add.text(350, 1450, '1 COLOR', { fontFamily: 'PixelFont', fontSize: '90px', color: '#ffffff', align: 'left' }).setOrigin(0, .5).setInteractive()
+    this.oneColorTextd.on('pointerdown', function () {
       if (this.Main.oneColor) {
-        oneColorText.setColor('#ffffff')
+        this.oneColorTextd.setColor('#ffffff')
         this.Main.oneColor = false
       } else {
-        oneColorText.setColor('#ff0000')
+        this.oneColorTextd.setColor('#ff0000')
         this.Main.oneColor = true
       }
     }, this)
-    var shuffleText = this.add.text(650, 1450, 'SHUFFLE', { fontFamily: 'PixelFont', fontSize: '90px', color: '#ffffff', align: 'left' }).setOrigin(0, .5).setInteractive()
-    shuffleText.on('pointerdown', function () {
+    this.shuffleText = this.add.text(650, 1450, 'SHUFFLE', { fontFamily: 'PixelFont', fontSize: '90px', color: '#ffffff', align: 'left' }).setOrigin(0, .5).setInteractive()
+    this.shuffleText.on('pointerdown', function () {
       this.Main.shuffleBoard()
     }, this)
 
     //////////////////////////////
     //bottom tally
-    /* var dotSize = 125
+    this.tallyContainer = this.add.container()
+    var dotSize = 125
     this.xOffset = (game.config.width - (dotColors.length * dotSize)) / 2
     this.tallyArray = []
     for (var i = 0; i < dotColors.length; i++) {
       var testDot = this.add.image(this.xOffset + dotSize * i + dotSize / 2, 1610, 'dot2').setTint(dotColors[i])
       testDot.displayWidth = this.Main.spriteSize * .50
       testDot.displayHeight = this.Main.spriteSize * .50
+      this.tallyContainer.add(testDot)
       var tallyText = this.add.text(this.xOffset + dotSize * i + dotSize / 2, 1600 - (this.Main.spriteSize * .50) / 1.5, '0', { fontFamily: 'PixelFont', fontSize: '90px', color: '#F0B060', align: 'left' }).setOrigin(.5, 1)
+      this.tallyContainer.add(tallyText)
       this.tallyArray.push(tallyText)
-    } */
-
+    }
+    this.tallyContainer.setAlpha(0)
 
     if (gameMode == 3) {
       this.setupGoals()
@@ -98,21 +102,21 @@ class UI extends Phaser.Scene {
     /////////////////////////////////////////
     this.Main.events.on('oneDot', function () {
       this.Main.oneDot = false
-      oneDotText.setColor('#ffffff')
+      this.onDotText.setColor('#ffffff')
     }, this);
     this.Main.events.on('oneColor', function () {
       this.Main.oneColor = false
-      oneColorText.setColor('#ffffff')
+      this.oneColorTextd.setColor('#ffffff')
     }, this);
 
     this.Main.events.on('score', function () {
       this.scoreText.setText(this.Main.board.moves)
-      this.squareText.setText(this.Main.board.tally[10])
+      //  this.squareText.setText(this.Main.board.tally[10])
       var total = 0
-      /*   for (var i = 0; i < dotColors.length; i++) {
-          this.tallyArray[i].setText(this.Main.board.tally[i])
-          total += this.Main.board.tally[i]
-        } */
+      for (var i = 0; i < dotColors.length; i++) {
+        this.tallyArray[i].setText(this.Main.board.tally[i])
+        total += this.Main.board.tally[i]
+      }
       if (gameMode != 3) {
         this.totalText.setText(total)
       }
@@ -176,6 +180,7 @@ class UI extends Phaser.Scene {
   tweenCount(count, icon) {
     var cx = count.x;
     var cy = count.y;
+    this.damageEmit(cx, cy);
     var tween = this.tweens.add({
       targets: count,
       // y: '-= 75',
@@ -183,7 +188,7 @@ class UI extends Phaser.Scene {
       duration: 300,
       onCompleteScope: this,
       onComplete: function () {
-        // this.damageEmit(cx, cy);
+
         var check = this.add.image(cx, cy, 'check').setOrigin(0, .5).setScale(.4).setAlpha(0).setTint(0x62cc7e);
         var tweencheck = this.tweens.add({
           targets: check,
@@ -668,7 +673,9 @@ class UI extends Phaser.Scene {
 
     if (this.menuGroup.y == 0) {
       this.scene.pause('playGame')
-
+      this.onDotText.disableInteractive()
+      this.oneColorTextd.disableInteractive()
+      this.shuffleText.disableInteractive()
       // console.log('Open menu')
       var menuTween = this.tweens.add({
         targets: this.menuGroup,
@@ -679,8 +686,11 @@ class UI extends Phaser.Scene {
 
     }
     if (this.menuGroup.y == -270) {
+      this.onDotText.setInteractive()
+      this.oneColorTextd.setInteractive()
+      this.shuffleText.setInteractive()
       this.scene.resume('playGame')
-      // console.log('close menu')
+      // console.log('close menu')dd
       var menuTween = this.tweens.add({
         targets: this.menuGroup,
         y: 0,
@@ -734,6 +744,36 @@ class UI extends Phaser.Scene {
     ////////end menu
   }
 
+  damageEmit(objX, objY) {
+    var particlesColor = this.add.particles("star");
+    //.setTint(0x7d1414);
+    var emitter = particlesColor.createEmitter({
+      // particle speed - particles do not move
+      // speed: 1000,
+      //frame: { frames: [0, 1, 2, 3], cycle: true },
 
+      speed: {
+        min: -500,
+        max: 500
+      },
+      // particle scale: from 1 to zero
+      scale: {
+        start: .8,
+        end: 0
+      },
+      // particle alpha: from opaque to transparent
+      alpha: {
+        start: 1,
+        end: 1
+      },
+      // particle frequency: one particle every 100 milliseconds
+      frequency: 40,
+      // particle lifespan: 1 second
+      lifespan: 1000
+    });
+    //emitter.tint.onChange(0x7d1414);
+    emitter.explode(40, objX, objY);
+
+  }
 
 }
