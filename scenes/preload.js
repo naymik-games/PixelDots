@@ -109,10 +109,12 @@ class preloadGame extends Phaser.Scene {
       frameHeight: 128
     });
     this.load.image('blank', 'assets/sprites/blank.png');
+    this.load.image('check', 'assets/sprites/checkmark.png');
     this.load.image('dot2', 'assets/sprites/dot2.png');
     this.load.image('arrow', 'assets/sprites/arrow.png');
     this.load.image('playagain', 'assets/sprites/button_.png');
     this.load.image('block', 'assets/sprites/block.png');
+    this.load.image('menu', 'assets/sprites/menu.png');
   }
   create() {
     this.scene.start("startGame");

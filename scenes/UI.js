@@ -13,17 +13,21 @@ class UI extends Phaser.Scene {
     this.Main = this.scene.get('playGame');
 
     this.score = 0;
+    if (gameMode != 3) {
+      this.modeText = this.add.text(450, 50, gameModeNames[gameMode], { fontFamily: 'PixelFont', fontSize: '100px', color: '#FaFaFa', align: 'left' }).setOrigin(.5)
+      this.totalText = this.add.text(775, 50, '0', { fontFamily: 'PixelFont', fontSize: '120px', color: '#F0B060', align: 'left' }).setOrigin(.5)
+      this.bestText = this.add.text(775, 125, gameSettings.mostDots[gameMode], { fontFamily: 'PixelFont', fontSize: '70px', color: '#FF0000', align: 'left' }).setOrigin(.5)
 
-    this.modeText = this.add.text(450, 50, gameModeNames[gameMode], { fontFamily: 'PixelFont', fontSize: '100px', color: '#FaFaFa', align: 'left' }).setOrigin(.5)
+    }
+
     this.scoreText = this.add.text(125, 50, '0', { fontFamily: 'PixelFont', fontSize: '120px', color: '#F0B060', align: 'left' }).setOrigin(.5)
     if (gameMode == 0 || gameMode == 2 || gameMode == 3) {
       this.goalText = this.add.text(125, 125, '/' + this.Main.moveLimit, { fontFamily: 'PixelFont', fontSize: '70px', color: '#F0B060', align: 'left' }).setOrigin(.5)
     }
 
-    this.squareText = this.add.text(850, 1600, '0', { fontFamily: 'PixelFont', fontSize: '100px', color: '#F0B060', align: 'left' }).setOrigin(1, .5)
+    this.squareText = this.add.text(850, 1600, '0', { fontFamily: 'PixelFont', fontSize: '100px', color: '#F0B060', align: 'left' }).setOrigin(1, .5).setAlpha(1)
 
-    this.totalText = this.add.text(775, 50, '0', { fontFamily: 'PixelFont', fontSize: '120px', color: '#F0B060', align: 'left' }).setOrigin(.5)
-    this.bestText = this.add.text(775, 125, gameSettings.mostDots[gameMode], { fontFamily: 'PixelFont', fontSize: '70px', color: '#FF0000', align: 'left' }).setOrigin(.5)
+
 
     if (gameMode == 1) {
       this.initialTime = 60;
@@ -58,8 +62,8 @@ class UI extends Phaser.Scene {
     }, this)
 
     //////////////////////////////
-
-    var dotSize = 125
+    //bottom tally
+    /* var dotSize = 125
     this.xOffset = (game.config.width - (dotColors.length * dotSize)) / 2
     this.tallyArray = []
     for (var i = 0; i < dotColors.length; i++) {
@@ -68,10 +72,12 @@ class UI extends Phaser.Scene {
       testDot.displayHeight = this.Main.spriteSize * .50
       var tallyText = this.add.text(this.xOffset + dotSize * i + dotSize / 2, 1600 - (this.Main.spriteSize * .50) / 1.5, '0', { fontFamily: 'PixelFont', fontSize: '90px', color: '#F0B060', align: 'left' }).setOrigin(.5, 1)
       this.tallyArray.push(tallyText)
+    } */
+
+
+    if (gameMode == 3) {
+      this.setupGoals()
     }
-
-
-
 
 
 
@@ -101,13 +107,19 @@ class UI extends Phaser.Scene {
 
     this.Main.events.on('score', function () {
       this.scoreText.setText(this.Main.board.moves)
-      this.squareText.setText(this.Main.board.squareTally)
+      this.squareText.setText(this.Main.board.tally[10])
       var total = 0
-      for (var i = 0; i < dotColors.length; i++) {
-        this.tallyArray[i].setText(this.Main.board.colorTally[i])
-        total += this.Main.board.colorTally[i]
+      /*   for (var i = 0; i < dotColors.length; i++) {
+          this.tallyArray[i].setText(this.Main.board.tally[i])
+          total += this.Main.board.tally[i]
+        } */
+      if (gameMode != 3) {
+        this.totalText.setText(total)
       }
-      this.totalText.setText(total)
+
+      if (gameMode == 3) {
+        this.winConditions();
+      }
       if (this.Main.board.moves == this.Main.moveLimit && gameMode != 1) {
 
         var txt = 'Game Over ' + total + ' Dots Collected'
@@ -127,7 +139,7 @@ class UI extends Phaser.Scene {
 
 
     /////////////////////////////
-
+    this.makeMenu()
 
 
   }
@@ -161,6 +173,567 @@ class UI extends Phaser.Scene {
     // Returns formated time
     return `${minutes}:${partInSeconds}`;
   }
+  tweenCount(count, icon) {
+    var cx = count.x;
+    var cy = count.y;
+    var tween = this.tweens.add({
+      targets: count,
+      // y: '-= 75',
+      alpha: 0,
+      duration: 300,
+      onCompleteScope: this,
+      onComplete: function () {
+        // this.damageEmit(cx, cy);
+        var check = this.add.image(cx, cy, 'check').setOrigin(0, .5).setScale(.4).setAlpha(0).setTint(0x62cc7e);
+        var tweencheck = this.tweens.add({
+          targets: check,
+          alpha: 1,
+          duration: 300,
+        })
+      }
+    });
+    var tweenicon = this.tweens.add({
+      targets: icon,
+      // alpha:0,
+      scale: 1,
+      duration: 200,
+      yoyo: true
+    })
+
+
+  }
+  setupGoals() {
+    // console.log(levels[onLevel].length);
+    //  for (var i = 0; i < levels[onLevel].length; i++) {
+    var i = 0;
+    var j = 0;
+    var x = 0;
+    var y = 65;
+    this.winCount = 0;
+    this.winComplete = 0;
+    var xOffsetT = 250
+    var xOffsetI = 310
+    var xSpace = 175
+    var labelSize = 45
+    var labelColor = 0xfafafa
+    var winC = levelConfig.win
+
+
+    Object.entries(winC).forEach(([key, value]) => {
+
+
+
+      if (key == 'color0') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.color0Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(.35).setAlpha(1).setTint(dotColors[0]);
+        this.color0Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.color0Goal = value;
+        this.color0Text.setText(value);
+        this.color0Win = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+
+      if (key == 'color1') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.color1Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(.35).setAlpha(1).setTint(colors[1]);
+        this.color1Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.color1Goal = value;
+        this.color1Text.setText(value);
+        this.color1Win = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+      if (key == 'color2') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.color2Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(.35).setAlpha(1).setTint(colors[2]);
+        this.color2Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.color2Goal = value;
+        this.color2Text.setText(value);
+        this.color2Win = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+      if (key == 'color3') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.color3Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(.35).setAlpha(1).setTint(colors[3]);
+        this.color3Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.color3Goal = value;
+        this.color3Text.setText(value);
+        this.color3Win = true;
+        this.winCount++;
+        i++;
+        j++;
+
+      }
+      if (key == 'color4') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.color4Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(.35).setAlpha(1).setTint(colors[4]);
+        this.color4Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.color4Goal = value;
+        this.color4Text.setText(value);
+        this.color4Win = true;
+        this.winCount++;
+        i++;
+        j++;
+
+      }
+      if (key == 'color5') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.color5Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(.35).setAlpha(1).setTint(colors[5]);
+        this.color5Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.color5Goal = value;
+        this.color5Text.setText(value);
+        this.color5Win = true;
+        this.winCount++;
+        i++;
+        j++;
+
+      }
+
+      if (key == 'drop') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.dropIcon = this.add.image(xOffsetT + x * xSpace, y, 'arrow').setScale(.35).setAlpha(1).setTint(0xF1C40F);
+        this.dropText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.dropGoal = value;
+        this.dropText.setText(value);
+        this.dropWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+
+      if (key == 'ice') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.iceIcon = this.add.image(xOffsetT + x * xSpace, y, 'ice', 3).setScale(.35).setAlpha(1)
+        this.iceText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.iceGoal = value;
+        this.iceText.setText(value);
+        this.iceWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+
+      /* if (key == 'gem') {
+        if (i > 2) {
+          y = 160;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.gemIcon = this.add.image(xOffsetT + x * xSpace, y, 'gem').setScale(.5).setAlpha(1).setTint(0xb8b8b8);
+        this.gemText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.gemGoal = value;
+        this.gemText.setText(value);
+        this.gemWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      } */
+      if (key == 'square') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.squareIcon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(.35).setAlpha(1).setTint(0xb8b8b8);
+        this.squareText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.squareGoal = value;
+        this.squareText.setText(value);
+        this.squareWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+      /* if (key == 'squareBomb') {
+        if (i > 2) {
+          y = 160;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.squareBombIcon = this.add.image(xOffsetT + x * xSpace, y, 'bomb1').setScale(.5).setAlpha(1);
+        this.squareBombText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.squareBombGoal = value;
+        this.squareBombText.setText(value);
+        this.squareBombWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      } */
+      /*  if (key == 'rover') {
+         if (i > 2) {
+           y = 160;
+           x = i - 3;
+         } else {
+           x = i;
+         }
+         this.roverIcon = this.add.image(xOffsetT + x * xSpace, y, 'rover1').setScale(.5).setAlpha(1).setTint(0xb8b8b8);
+         this.roverText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+         this.roverGoal = value;
+         this.roverText.setText(value);
+         this.roverWin = true;
+         this.winCount++;
+         i++;
+         j++;
+       } */
+      if (key == 'bomb') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.bombIcon = this.add.image(xOffsetT + x * xSpace, y, 'bomb', 3).setScale(.35).setAlpha(1).setTint(0xb8b8b8);
+        this.bombText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.bombGoal = value;
+        this.bombText.setText(value);
+        this.bombWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+      //console.log(key + ' ' + value); // "a 5", "b 7", "c 9"
+
+    });
+    // console.log(levelSettings.win[i].thing2);
+    //  }
+  }
+  winConditions() {
+
+
+
+
+    if (this.color0Win) {
+      this.color0Text.setText(this.color0Goal - this.Main.board.tally[0]);
+      if (this.Main.board.tally[0] >= this.color0Goal) {
+        this.tweenCount(this.color0Text, this.color0Icon);
+        this.color0Goal = -100
+        this.winComplete++;
+        this.color0Win = false;
+      }
+    }
+    if (this.color1Win) {
+      this.color1Text.setText(this.color1Goal - this.Main.board.tally[1]);
+      if (this.Main.board.tally[1] >= this.color1Goal) {
+        this.tweenCount(this.color1Text, this.color1Icon);
+        this.color1Goal = -100
+        this.winComplete++;
+        this.color1Win = false;
+      }
+    }
+    if (this.color2Win) {
+      this.color2Text.setText(this.color2Goal - this.Main.board.tally[2]);
+      if (this.Main.board.tally[2] >= this.color2Goal) {
+        this.tweenCount(this.color2Text, this.color2Icon);
+        this.color2Goal = -100
+        this.winComplete++;
+        this.color2Win = false;
+      }
+    }
+    if (this.color3Win) {
+      this.color3Text.setText(this.color3Goal - this.Main.board.tally[3]);
+      if (this.Main.board.tally[3] >= this.color3Goal) {
+        this.tweenCount(this.color3Text, this.color3Icon);
+        this.color3Goal = -100
+        this.winComplete++;
+        this.color3Win = false;
+      }
+    }
+    if (this.color4Win) {
+      this.color4Text.setText(this.color4Goal - this.Main.board.tally[4]);
+      if (this.Main.board.tally[4] >= this.color4Goal) {
+        this.tweenCount(this.color4Text, this.color4Icon);
+        this.color4Goal = -100
+        this.winComplete++;
+        this.color4Win = false;
+      }
+    }
+    if (this.color5Win) {
+      this.color5Text.setText(this.color5Goal - this.Main.board.tally[5]);
+      if (this.Main.board.tally[5] >= this.color5Goal) {
+        this.tweenCount(this.color5Text, this.color5Icon);
+        this.color5Goal = -100
+        this.winComplete++;
+        this.color5Win = false;
+      }
+    }
+    if (this.squareWin) {
+      this.squareText.setText(this.squareGoal - this.Main.board.tally[10]);
+      if (this.Main.board.tally[10] >= this.squareGoal) {
+        this.tweenCount(this.squareText, this.squareIcon);
+        this.squareGoal = -100
+        this.winComplete++;
+        this.squareWin = false;
+      }
+    }
+    if (this.dropWin) {
+      this.dropText.setText(this.dropGoal - this.Main.board.tally[6]);
+      if (this.Main.board.tally[6] >= this.dropGoal) {
+        this.tweenCount(this.dropText, this.dropIcon);
+        this.dropGoal = -100
+        this.winComplete++;
+        this.dropWin = false;
+      }
+    }
+    if (this.bombWin) {
+      this.bombText.setText(this.bombGoal - this.Main.board.tally[7]);
+      if (this.Main.board.tally[7] >= this.bombGoal) {
+        this.tweenCount(this.bombText, this.bombIcon);
+        this.bombGoal = -100
+        this.winComplete++;
+        this.bombWin = false;
+      }
+    }
+    if (this.iceWin) {
+      this.iceText.setText(this.iceGoal - this.Main.board.tally[8]);
+      if (this.Main.board.tally[8] >= this.iceGoal) {
+        this.tweenCount(this.iceText, this.iceIcon);
+        this.iceGoal = -100
+        this.winComplete++;
+        this.iceWin = false;
+      }
+    }
+    /* if (this.color0Win) {
+      this.redText.setText(this.redGoal - this.main.tally.red);
+      if (this.main.tally.red >= this.redGoal) {
+        this.tweenCount(this.redText, this.redIcon);
+        this.redGoal = -100
+        this.winComplete++;
+        this.redWin = false;
+      }
+    }
+    if (this.color0Win) {
+      this.purpleText.setText(this.purpleGoal - this.main.tally.purple);
+      if (this.main.tally.purple >= this.purpleGoal) {
+        this.tweenCount(this.purpleText, this.purpleIcon);
+        this.purpleGoal = -100
+        this.winComplete++;
+        this.purpleWin = false;
+      }
+    }
+    if (this.color0Win) {
+      this.orangeText.setText(this.orangeGoal - this.main.tally.orange);
+      if (this.main.tally.orange >= this.orangeGoal) {
+        this.tweenCount(this.orangeText, this.orangeIcon);
+        this.orangeGoal = -100
+        this.winComplete++;
+        this.orangeWin = false;
+      }
+    }
+    if (this.color0Win) {
+      this.brownText.setText(this.brownGoal - this.main.tally.brown);
+      if (this.main.tally.brown >= this.brownGoal) {
+        this.tweenCount(this.brownText, this.brownIcon);
+        this.brownGoal = -100
+        this.winComplete++;
+        this.brownWin = false;
+      }
+    }
+    if (this.color0Win) {
+      this.blueText.setText(this.blueGoal - this.main.tally.blue);
+      if (this.main.tally.blue >= this.blueGoal) {
+        this.tweenCount(this.blueText, this.blueIcon);
+        this.blueGoal = -100
+        this.winComplete++;
+        this.blueWin = false;
+      }
+    }
+    if (this.dropWin) {
+      this.dropText.setText(this.dropGoal - this.main.tally.drop);
+      if (this.main.tally.drop >= this.dropGoal) {
+        this.tweenCount(this.dropText, this.dropIcon);
+        this.dropGoal = -100
+        this.winComplete++;
+        this.dropWin = false;
+      }
+    }
+    if (this.iceWin) {
+      this.iceText.setText(this.iceGoal - this.main.tally.ice);
+      if (this.main.tally.ice >= this.iceGoal) {
+        this.tweenCount(this.iceText, this.iceIcon);
+        this.iceGoal = -100
+        this.winComplete++;
+        this.iceWin = false;
+      }
+    }
+    if (this.bombWin) {
+      this.bombText.setText(this.bombGoal - this.main.tally.bomb);
+      if (this.main.tally.bomb >= this.bombGoal) {
+        this.tweenCount(this.bombText, this.bombIcon);
+        this.bombGoal = -100
+        this.winComplete++;
+        this.bombWin = false;
+      }
+    }
+    if (this.squareWin) {
+      this.sixText.setText(this.sixGoal - this.main.tally.square);
+      if (this.main.tally.square >= this.sixGoal) {
+        this.tweenCount(this.sixText, this.sixIcon);
+        this.sixGoal = -100
+        this.winComplete++;
+        this.sixWin = false;
+      }
+    } */
+    /* if (this.gemWin) {
+      this.gemText.setText(this.gemGoal - this.main.tally.gem);
+      if (this.main.tally.gem >= this.gemGoal) {
+        this.tweenCount(this.gemText, this.gemIcon);
+        this.gemGoal = -100
+        this.winComplete++;
+        this.gemWin = false;
+      }
+    }
+    if (this.roverWin) {
+      this.roverText.setText(this.roverGoal - this.main.tally.rover);
+      if (this.main.tally.rover >= this.roverGoal) {
+        this.tweenCount(this.roverText, this.roverIcon);
+        this.roverGoal = -100
+        this.winComplete++;
+        this.roverWin = false;
+      }
+    } */
+    if (this.winCount == this.winComplete) {
+      // return true;
+      //console.log('you win');
+      //this.scene.start("start");
+      //this.scene.stop('PlayGame');
+      var time = this.time.addEvent({
+        delay: 1500,
+        callback: function () {
+          // alert('You won!')
+          this.scene.pause('playGame');
+          this.scene.launch("endGame");
+          // this.scene.launch("endGame", { outcome: 1, movesLeft: levelSettings.movesGoal - this.movesLeft, level: onLevel });
+          this.scene.pause('UI');
+          /* if (appSettings.music) {
+            this.main.backgroundMusic.pause()
+          } */
+        },
+        callbackScope: this
+      })
+
+    } else {
+      // return false;
+    }
+  }
+
+
+  toggleMenu() {
+
+    if (this.menuGroup.y == 0) {
+      this.scene.pause('playGame')
+
+      // console.log('Open menu')
+      var menuTween = this.tweens.add({
+        targets: this.menuGroup,
+        y: -270,
+        duration: 500,
+        ease: 'Bounce'
+      })
+
+    }
+    if (this.menuGroup.y == -270) {
+      this.scene.resume('playGame')
+      // console.log('close menu')
+      var menuTween = this.tweens.add({
+        targets: this.menuGroup,
+        y: 0,
+        duration: 500,
+        ease: 'Bounce'
+      })
+    }
+  }
+  makeMenu() {
+    ////////menu
+    this.menuGroup = this.add.container().setDepth(5);
+    var menuBG = this.add.image(game.config.width / 2, game.config.height - 85, 'blank').setOrigin(.5, 0).setTint(0x333333).setAlpha(.8)
+    menuBG.displayWidth = 300;
+    menuBG.displayHeight = 600
+    this.menuGroup.add(menuBG)
+    var menuButton = this.add.image(game.config.width / 2, game.config.height - 40, "menu").setInteractive().setDepth(3);
+    menuButton.on('pointerdown', this.toggleMenu, this)
+    menuButton.setOrigin(0.5);
+    this.menuGroup.add(menuButton);
+    var homeButton = this.add.bitmapText(game.config.width / 2, game.config.height + 50, 'topaz', 'HOME', 50).setOrigin(.5).setTint(0xffffff).setAlpha(1).setInteractive();
+    homeButton.on('pointerdown', function () {
+      this.scene.stop()
+      this.scene.stop('playGame')
+      this.scene.start('startGame')
+
+    }, this)
+    this.menuGroup.add(homeButton);
+    /* var wordButton = this.add.bitmapText(game.config.width / 2, game.config.height + 140, 'topaz', 'WORDS', 50).setOrigin(.5).setTint(0xffffff).setAlpha(1).setInteractive();
+    wordButton.on('pointerdown', function () {
+      var data = {
+        yesWords: this.foundWords,
+        noWords: this.notWords
+      }
+      this.scene.pause()
+      //this.scene.launch('wordsPlayed', data)
+    }, this)
+    this.menuGroup.add(wordButton);
+    var helpButton = this.add.bitmapText(game.config.width / 2, game.config.height + 230, 'topaz', 'RESTART', 50).setOrigin(.5).setTint(0xffffff).setAlpha(1).setInteractive();
+    helpButton.on('pointerdown', function () {
+      this.scene.stop('Playgame')
+      this.scene.stop()
+
+      this.scene.launch('UI')
+      this.scene.start('playGame')
+
+    }, this)
+    this.menuGroup.add(helpButton); */
+    //var thankYou = game.add.button(game.config.width / 2, game.config.height + 130, "thankyou", function(){});
+    // thankYou.setOrigin(0.5);
+    // menuGroup.add(thankYou);    
+    ////////end menu
+  }
+
 
 
 }

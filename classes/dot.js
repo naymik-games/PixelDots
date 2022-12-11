@@ -1,3 +1,12 @@
+//types
+// 0 color dot
+//1 drop tally index 6
+//2 bomb tally index 7
+//3 ice tally index 8
+//4 block tally index 9 n/a
+//5 square tally index 10
+//5 + type--5 + 1 = 6
+//[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 class Dot {
   constructor(id, x, y, color, board, dotSize) {
     this.coordinates = [x, y];
@@ -53,7 +62,7 @@ class Dot {
   destroy() {
     if (this.strength == 0) {
       this.disabled = true
-      this.board.colorTally[this.color]++
+      this.board.tally[this.color]++
       this.redrawThisColumn();
       this.adjustAboveDotCoordinates(this.dotSize);
       this.deleteThisFromArray();
@@ -62,7 +71,7 @@ class Dot {
         this.board.scene.explode(this.coordinates[0], this.coordinates[1])
         console.log('bomb exploded')
         this.board.extraDots.push(this.coordinates)
-        this.board.specialTally[2]++
+        this.board.tally[7]++
       }
     } else {
       this.image.setAlpha(1)

@@ -28,7 +28,7 @@ class endGame extends Phaser.Scene {
 		var total = 0
 		for (var i = 0; i < dotColors.length; i++) {
 			//this.tallyArray[i].setText(this.Main.board.colorTally[i])
-			total += this.Main.board.colorTally[i]
+			total += this.Main.board.tally[i]
 		}
 		/* 		var defaultValues = {
 					mostDotsMoves: 0,
@@ -44,7 +44,7 @@ class endGame extends Phaser.Scene {
 		this.end.add(titleText)
 
 		gameSettings.totalDots += total
-		gameSettings.totalSquares += this.Main.board.squareTally
+		gameSettings.totalSquares += this.Main.board.tally[10]
 
 		var scorelabel = this.add.text(225, 425, 'Score', { fontFamily: 'PixelFont', fontSize: '70px', color: '#000000', align: 'left' }).setOrigin(.5)
 		this.end.add(scorelabel)

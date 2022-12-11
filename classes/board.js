@@ -11,10 +11,10 @@ class Board {
     this.squareCompleted = false
     this.numColors = numColors
     this.redrawTheseColumns = {};
-    this.colorTally = [0, 0, 0, 0, 0, 0]
-    this.specialTally = [0, 0, 0, 0]
+    this.tally = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    //this.specialTally = [0, 0, 0, 0]
     this.moves = 0
-    this.squareTally = 0
+    //this.squareTally = 0
     this.newDots = []
     this.extraDots = []
   }
@@ -97,7 +97,8 @@ class Board {
 
       } else {
         this.overlay[coordinates[0]][coordinates[1]].type = 0
-        this.specialTally[3]++
+        this.tally[8]++
+        this.scene.addScore()
       }
       this.overlay[coordinates[0]][coordinates[1]].image.setFrame(this.overlay[coordinates[0]][coordinates[1]].strength)
     }

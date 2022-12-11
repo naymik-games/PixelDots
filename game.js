@@ -84,7 +84,7 @@ class playGame extends Phaser.Scene {
 
     this.dots = this.add.group({
 
-      maxSize: (this.boardWidth * this.boardHeight) + 30,
+      maxSize: (this.boardWidth * this.boardHeight) + 20,
 
     });
     ///this.dots.createMultiple(this.boardWidth * this.boardHeight, 'dot2');
@@ -124,6 +124,7 @@ class playGame extends Phaser.Scene {
       maxSize: 30
     });
     //this.check = this.add.image(725, 1000, 'check').setScale(.7);
+
   }
   update() {
 
@@ -207,7 +208,7 @@ class playGame extends Phaser.Scene {
     if (this.board.selectedDots.length > 1) {
 
       if (this.board.squareCompleted) {
-        this.board.squareTally++
+        this.board.tally[10]++
         this.squareBox.clear()
         this.squareBox.lineStyle(5, 0xfafafa, 1);
         this.squareBox.strokeRoundedRect(this.xOffset - 10, this.yOffset - 10, (this.dotSize * this.boardWidth) + 20, (this.dotSize * this.boardHeight) + 20, 15);
@@ -397,4 +398,5 @@ class playGame extends Phaser.Scene {
   shuffleBoard() {
     this.board.reassignColors()
   }
+
 }
