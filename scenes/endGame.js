@@ -8,10 +8,10 @@ class endGame extends Phaser.Scene {
 
 	}
 	init(data) {
-		this.totalBlocksRemoved = data.totalRemoved;
-		this.outcome = data.outcome;
-		this.movesLeft = data.movesLeft;
-		this.level = data.level;
+		//this.totalBlocksRemoved = data.totalRemoved;
+		this.outcome = data.result;
+		//	this.movesLeft = data.movesLeft;
+		//this.level = data.level;
 	}
 	create() {
 		//	this.cameras.main.setBackgroundColor(0xf7eac6);
@@ -86,7 +86,10 @@ class endGame extends Phaser.Scene {
 		var playAgain = this.add.image(450, 1400, 'playagain').setInteractive()
 		playAgain.on('pointerdown', this.play, this)
 		this.end.add(playAgain)
-
+		if (gameMode == 3) {
+			this.setupGoals()
+			console.log(this.outcome)
+		}
 		localStorage.setItem('SD4save', JSON.stringify(gameSettings));
 	}
 
@@ -162,7 +165,202 @@ class endGame extends Phaser.Scene {
 		}, this);
 		localStorage.setItem('SDsave', JSON.stringify(gameSettings));
 	}
+	setupGoals() {
+		// console.log(levels[onLevel].length);
+		//  for (var i = 0; i < levels[onLevel].length; i++) {
+		var i = 0;
+		var j = 0;
+		var x = 0;
+		var y = 225;
+		var y2 = 300
+		this.winCount = 0;
+		this.winComplete = 0;
+		var xOffsetT = 250
+		var xOffsetI = 310
+		var xSpace = 175
+		var labelSize = 55
+		var labelColor = 0x000000
+		var iconScale = .5
+		var winC = levelConfig.win
 
+
+		Object.entries(winC).forEach(([key, value]) => {
+
+
+
+			if (key == 'color0') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.color0Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(dotColors[0]);
+				this.color0Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+				this.color0Text.setText(value);
+				this.end.add(this.color0Icon)
+				this.end.add(this.color0Text)
+				i++;
+				j++;
+			}
+
+			if (key == 'color1') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.color1Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[1]);
+				this.color1Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+				this.color1Text.setText(value);
+				this.end.add(this.color1Icon)
+				this.end.add(this.color1Text)
+				i++;
+				j++;
+			}
+			if (key == 'color2') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.color2Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[2]);
+				this.color2Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+				this.color2Text.setText(value);
+				this.end.add(this.color2Icon)
+				this.end.add(this.color2Text)
+				i++;
+				j++;
+			}
+			if (key == 'color3') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.color3Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[3]);
+				this.color3Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+				this.color3Text.setText(value);
+				this.end.add(this.color3Icon)
+				this.end.add(this.color3Text)
+				i++;
+				j++;
+
+			}
+			if (key == 'color4') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.color4Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[4]);
+				this.color4Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+				this.color4Text.setText(value);
+				this.end.add(this.color4Icon)
+				this.end.add(this.color4Text)
+				i++;
+				j++;
+
+			}
+			if (key == 'color5') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.color5Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[5]);
+				this.color5Text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+				this.color5Text.setText(value);
+				this.end.add(this.color5Icon)
+				this.end.add(this.color5Text)
+				i++;
+				j++;
+
+			}
+
+			if (key == 'drop') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.dropIcon = this.add.image(xOffsetT + x * xSpace, y, 'arrow').setScale(iconScale).setAlpha(1).setTint(0xF1C40F);
+				this.dropText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+				this.dropText.setText(value);
+				this.end.add(this.dropIcon)
+				this.end.add(this.dropText)
+				i++;
+				j++;
+			}
+
+			if (key == 'ice') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.iceIcon = this.add.image(xOffsetT + x * xSpace, y, 'ice', 3).setScale(iconScale).setAlpha(1)
+				this.iceText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+				this.iceText.setText(value);
+				this.end.add(this.iceIcon)
+				this.end.add(this.iceText)
+				i++;
+				j++;
+			}
+
+
+			if (key == 'square') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.squareIcon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
+				this.squareText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+				this.squareText.setText(value);
+				this.end.add(this.squareIcon)
+				this.end.add(this.squareText)
+				i++;
+				j++;
+			}
+
+			if (key == 'bomb') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.bombIcon = this.add.image(xOffsetT + x * xSpace, y, 'bomb', 3).setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
+				this.bombText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+				this.bombText.setText(value);
+				this.end.add(this.bombIcon)
+				this.end.add(this.bombText)
+				i++;
+				j++;
+			}
+			//console.log(key + ' ' + value); // "a 5", "b 7", "c 9"
+
+		});
+		// console.log(levelSettings.win[i].thing2);
+		//  }
+	}
 
 }
 

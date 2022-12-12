@@ -17,7 +17,6 @@ class UI extends Phaser.Scene {
       this.modeText = this.add.text(450, 50, gameModeNames[gameMode], { fontFamily: 'PixelFont', fontSize: '100px', color: '#FaFaFa', align: 'left' }).setOrigin(.5)
       this.totalText = this.add.text(775, 50, '0', { fontFamily: 'PixelFont', fontSize: '120px', color: '#F0B060', align: 'left' }).setOrigin(.5)
       this.bestText = this.add.text(775, 125, gameSettings.mostDots[gameMode], { fontFamily: 'PixelFont', fontSize: '70px', color: '#FF0000', align: 'left' }).setOrigin(.5)
-
     }
 
     this.scoreText = this.add.text(125, 50, '0', { fontFamily: 'PixelFont', fontSize: '120px', color: '#F0B060', align: 'left' }).setOrigin(.5)
@@ -81,6 +80,8 @@ class UI extends Phaser.Scene {
 
     if (gameMode == 3) {
       this.setupGoals()
+      this.onLevelText = this.add.text(640, 1580, 'LV ' + gameSettings.currentLevel, { fontFamily: 'PixelFont', fontSize: '125px', color: '#F0B060', align: 'left' }).setOrigin(0, .5)
+
     }
 
 
@@ -129,7 +130,12 @@ class UI extends Phaser.Scene {
         var txt = 'Game Over ' + total + ' Dots Collected'
         this.scene.pause()
         this.scene.pause('playGame')
-        this.scene.launch('endGame')
+        if (gameMode != 3) {
+          this.scene.launch('endGame')
+        } else {
+          this.scene.launch('endGameChal', { result: 'Fail' })
+        }
+
         //this.loadEnd()
       }
       //console.log('dots ' + string)
@@ -653,7 +659,7 @@ class UI extends Phaser.Scene {
         callback: function () {
           // alert('You won!')
           this.scene.pause('playGame');
-          this.scene.launch("endGame");
+          this.scene.launch('endGameChal', { result: 'Win' })
           // this.scene.launch("endGame", { outcome: 1, movesLeft: levelSettings.movesGoal - this.movesLeft, level: onLevel });
           this.scene.pause('UI');
           /* if (appSettings.music) {

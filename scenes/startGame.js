@@ -114,28 +114,11 @@ class startGame extends Phaser.Scene {
     this.scene.launch('UI');
   }
   puzzleHandler() {
-    levelConfig = {
-      w: 8,
-      h: 12,
-      mL: 25,
-      c: 5,
-      aD: true,
-      dS: 5,
-      dG: 5,
-      aB: false,
-      bS: 5,
-      bG: 5,
-      aI: true,
-      iS: 7,
-      iG: 5,
-      aBl: false,
-      blS: 5,
-      square: true,
-      win: { color0: 10, drop: 2, ice: 3 }//color2: 10, color3: 10, square: 10, drop: 7, ice: 3
-    }
+    levelConfig = levels[gameSettings.unlocked]
     gameMode = 3
-    this.scene.start('playGame');
-    this.scene.launch('UI');
+    gameSettings.currentLevel = gameSettings.unlocked
+    this.scene.start('selectGame');
+    //this.scene.launch('UI');
   }
 
 }

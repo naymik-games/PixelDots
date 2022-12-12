@@ -9,9 +9,10 @@ var filesToCache = [
 
   '/scenes/preload.js',
   '/scenes/startGame.js',
-  // '/scenes/selectGame.js',
+  '/scenes/selectGame.js',
   //'/scenes/preview.js',
   '/scenes/endGame.js',
+  '/scenes/endGameChallenge.js',
   // '/scenes/levelBuilder.js',
   '/scenes/UI.js',
 

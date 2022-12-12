@@ -39,7 +39,8 @@ let colorGroups = [[0xDC5639, 0x823957, 0x436475, 0x5FA34C, 0xFBBD4E, 0xA6AB86],
 let gameSettings;
 var defaultValues = {
   mostDots: [0, 0, 0, 0],
-  levelStatus: [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+  completed: 0,
+  unlocked: 1,
   totalSquares: 0,
   totalDots: 0,
   group: 0,
@@ -84,3 +85,24 @@ function shuffle(array) {
 
   return array;
 }
+
+let levels = [
+  {
+    id: 0, w: 8, h: 12, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, square: true, win: { color0: 10, color1: 10, drop: 2, color2: 3 }
+  },
+  {
+    id: 1, w: 6, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, square: true, win: { color0: 10, color1: 10 }
+  },
+  {
+    id: 2, w: 6, h: 10, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, square: true, win: { color2: 10, color3: 10 }
+  },
+  {
+    id: 3, w: 4, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, square: true, win: { color4: 10, color2: 10 }
+  },
+  {
+    id: 4, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, square: true, win: { color4: 10, color2: 10, drop: 4 }
+  },
+  {
+    id: 5, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, square: true, win: { color4: 10, color2: 10, drop: 4 }
+  }
+]
