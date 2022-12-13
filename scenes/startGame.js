@@ -84,6 +84,8 @@ class startGame extends Phaser.Scene {
       iG: 5,
       aBl: false,
       blS: 5,
+      aR: false,
+      rS: 0,
       square: true
     }
     gameMode = 1
@@ -107,6 +109,8 @@ class startGame extends Phaser.Scene {
       iG: 5,
       aBl: false,
       blS: 5,
+      aR: false,
+      rS: 0,
       square: true
     }
     gameMode = 2

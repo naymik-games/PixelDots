@@ -156,6 +156,17 @@ class Board {
     //this.bounceDots();
   }
   ////////////
+  findRovers() {
+    var container = [];
+    this.dots.forEach(function (column) {
+      column.forEach(function (dot) {
+        if (dot.type == 6) container.push(dot);
+      });
+    });
+    return container;
+
+  }
+
 
   findDrops() {
     var drops = []
@@ -306,5 +317,22 @@ class Board {
       if (circle.length >= 5) return true;
     }
     return false;
+  }
+  swapItems(row, col, row2, col2) {
+    let tempObject = Object.assign(this.board[row][col]);
+    this.board[row][col] = Object.assign(this.board[row2][col2]);
+    this.board[row2][col2] = Object.assign(tempObject);
+    return [{
+      row: row,
+      col: col,
+      deltaRow: row - row2,
+      deltacol: col - col2
+    },
+    {
+      row: row2,
+      col: col2,
+      deltaRow: row2 - row,
+      deltacol: col2 - col
+    }]
   }
 }

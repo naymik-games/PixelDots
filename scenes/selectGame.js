@@ -1,11 +1,11 @@
 menuOptions = {
-  colors: ["0xffffff", "0xff0000", "0x00ff00", "0x0000ff", "0xffff00"],
+  colors: [0xDC5639, 0x823957, 0x436475, 0x5FA34C, 0xFBBD4E, 0xA6AB86],
   pages: 5,
   columns: 3,
   rows: 4,
-  thumbWidth: 250,
-  thumbHeight: 250,
-  spacing: 20,
+  thumbWidth: 200,
+  thumbHeight: 200,
+  spacing: 30,
   localStorageName: "levelselect"
 }
 class selectGame extends Phaser.Scene {
@@ -13,15 +13,11 @@ class selectGame extends Phaser.Scene {
     super("selectGame");
   }
   preload() {
-    this.load.spritesheet("levelthumb", "assets/sprites/select_icons.png", {
-      frameWidth: 300,
-      frameHeight: 300
-    });
-    this.load.image("levelpages", "assets/sprites/levelpages.png");
-    this.load.image("transp", "assets/sprites/transp.png");
+
   }
   create() {
-    menuOptions.pages = 5
+    this.cameras.main.setBackgroundColor(0x191919);
+    menuOptions.pages = 2
 
     /* var back = this.add.image(0, 0, 'select_back').setOrigin(0)
     back.displayWidth = 900
@@ -36,7 +32,9 @@ class selectGame extends Phaser.Scene {
     //this.savedData = localStorage.getItem(menuOptions.localStorageName) == null ? this.stars.toString() : localStorage.getItem(menuOptions.localStorageName);
     //this.stars = this.savedData.split(",");
     this.currentPage = 0;
-    this.pageText = this.add.bitmapText(game.config.width / 2, 75, 'topaz', " (1 / " + menuOptions.pages + ")", 80).setOrigin(.5).setTint(0xffffff).setAlpha(1);
+    var titleText = this.add.text(450, 75, 'SELECT LEVEL', { fontFamily: 'PixelFont', fontSize: '125px', color: '#FAFAFA', align: 'left' }).setOrigin(.5)
+
+    this.pageText = this.add.bitmapText(game.config.width / 2, 75, 'topaz', " (1 / " + menuOptions.pages + ")", 80).setOrigin(.5).setTint(0xffffff).setAlpha(0);
 
 
     this.pageText.setOrigin(0.5);
@@ -49,13 +47,13 @@ class selectGame extends Phaser.Scene {
     var rowLength = menuOptions.thumbWidth * menuOptions.columns + menuOptions.spacing * (menuOptions.columns - 1);
     var leftMargin = (game.config.width - rowLength) / 2 + menuOptions.thumbWidth / 2;
     var colHeight = menuOptions.thumbHeight * menuOptions.rows + menuOptions.spacing * (menuOptions.rows - 1);
-    var topMargin = (game.config.height - colHeight) / 2 + menuOptions.thumbHeight / 2;
+    var topMargin = 600;
     for (var k = 0; k < menuOptions.pages; k++) {
       for (var i = 0; i < menuOptions.columns; i++) {
         for (var j = 0; j < menuOptions.rows; j++) {
           var thumb = this.add.image(k * game.config.width + leftMargin + i * (menuOptions.thumbWidth + menuOptions.spacing), topMargin + j * (menuOptions.thumbHeight + menuOptions.spacing), "levelthumb");
-          thumb.displayWidth = 250;
-          thumb.displayHeight = 250;
+          thumb.displayWidth = menuOptions.thumbWidth;
+          thumb.displayHeight = menuOptions.thumbHeight
           //thumb.setTint(menuOptions.colors[k]);
           thumb.levelNumber = k * (menuOptions.rows * menuOptions.columns) + j * menuOptions.columns + i;
           //console.log(gameData.levelStatus[thumb.levelNumber - 1])
@@ -69,7 +67,9 @@ class selectGame extends Phaser.Scene {
           thumb.setFrame(this.getFrame(frame));
           this.itemGroup.add(thumb);
 
-          var levelText = this.add.bitmapText(thumb.x, thumb.y - 60, 'topaz', thumb.levelNumber + 1, 100).setOrigin(.5).setTint(0x000000).setAlpha(1);
+          // var levelText = this.add.bitmapText(thumb.x, thumb.y - 45, 'topaz', thumb.levelNumber + 1, 75).setOrigin(.5).setTint(0x000000).setAlpha(1);
+          var levelText = this.add.text(thumb.x, thumb.y - 50, thumb.levelNumber + 1, { fontFamily: 'PixelFontWide', fontSize: '125px', color: '#191919', align: 'left' }).setOrigin(.5)
+
 
           this.itemGroup.add(levelText);
         }
@@ -120,10 +120,11 @@ class selectGame extends Phaser.Scene {
               levelConfig = levels[item.levelNumber]
               gameMode = 3
               gameSettings.currentLevel = item.levelNumber
-              this.scene.stop()
-              this.scene.launch('playGame');
-              //this.scene.start("PlayGame");
-              this.scene.launch('UI')
+              this.setupGoals(item.levelNumber)
+              //this.scene.stop()
+              //  this.scene.launch('playGame');
+
+              //this.scene.launch('UI')
             }
           }
         }, this);
@@ -192,4 +193,68 @@ class selectGame extends Phaser.Scene {
     }
     return frame
   }
+  setupGoals(level) {
+    if (this.preview) {
+      this.preview.destroy()
+    }
+    // console.log(levels[onLevel].length);
+    //  for (var i = 0; i < levels[onLevel].length; i++) {
+    var i = 0;
+    var j = 0;
+    var x = 0;
+    var y = 225;
+    var y2 = 300
+    this.winCount = 0;
+    this.winComplete = 0;
+    var xOffsetT = 250
+    var xOffsetI = 310
+    var xSpace = 175
+    var labelSize = 55
+    var labelColor = 0xfafafa
+    var iconScale = .5
+    var winC = levels[level].win
+
+    this.preview = this.add.container()
+    Object.entries(winC).forEach(([key, value]) => {
+
+
+
+      if (key == 'color0') {
+      }
+      if (i > 2) {
+        y = y2;
+        x = i - 3;
+      } else {
+        x = i;
+      }
+      var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(dotColors[0]);
+      var text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', value, labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+
+      this.preview.add(icon)
+      this.preview.add(text)
+
+      i++;
+      j++;
+
+
+
+      //console.log(key + ' ' + value); // "a 5", "b 7", "c 9"
+
+    });
+    // console.log(levelSettings.win[i].thing2);
+    //  }
+
+    var play = this.add.bitmapText(450, 375, 'topaz', 'PLAY', 60).setOrigin(.5).setTint(labelColor).setAlpha(1).setInteractive();
+    play.on('pointerdown', function () {
+      this.scene.stop()
+      this.scene.launch('playGame');
+
+      this.scene.launch('UI')
+
+    }, this)
+
+
+
+  }
+
 }

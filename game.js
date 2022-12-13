@@ -50,6 +50,8 @@ class playGame extends Phaser.Scene {
     this.iceGoal = levelConfig.iG
     this.allowBlock = levelConfig.aBl
     this.blockStartCount = levelConfig.blS
+    this.allowRover = levelConfig.aR
+    this.roverStartCount = levelConfig.rS
     this.allowSquares = levelConfig.square
 
     let dotAllColors = colorGroups[gameSettings.colorSet]
@@ -256,6 +258,11 @@ class playGame extends Phaser.Scene {
           this.board.destroyDots()
         }
       }
+      //////////
+      if (this.allowRover) {
+        var rovers = this.board.findRovers()
+        console.log(rovers)
+      }
       this.board.moves++
       this.addScore()
     } else {
@@ -268,6 +275,20 @@ class playGame extends Phaser.Scene {
 
   }
   drawBoard() {
+    if (this.allowRover) {
+      console.log('making rovers')
+      var placedR = 0
+      while (placedR < 5) {
+        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
+        var randY = Phaser.Math.Between(0, this.boardHeight - 2)
+        if (this.board.dots[randX][randY].type == 0) {
+          this.board.dots[randX][randY].strength = 3
+          this.board.dots[randX][randY].type = 6
+          this.board.dots[randX][randY].image.setTexture('rover', 3)
+          placedR++
+        }
+      }
+    }
 
     if (this.allowBomb) {
       console.log('making bombs')

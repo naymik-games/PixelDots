@@ -5,6 +5,7 @@
 //3 ice tally index 8
 //4 block tally index 9 n/a
 //5 square tally index 10
+//6 rover tally index 11
 //5 + type--5 + 1 = 6
 //[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 class Dot {
@@ -52,6 +53,9 @@ class Dot {
       this.image.setActive(false)
       this.image.setVisible(false)
     } else if (this.type == 2) {
+      this.strength--
+      this.image.setFrame(this.strength)
+    } else if (this.type == 6) {
       this.strength--
       this.image.setFrame(this.strength)
     }

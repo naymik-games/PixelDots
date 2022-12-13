@@ -88,7 +88,7 @@ class preloadGame extends Phaser.Scene {
       frameWidth: 6,
       frameHeight: 6
     });
-    this.load.spritesheet("rover", "assets/sprites/rover.png", {
+    this.load.spritesheet("rover1", "assets/sprites/rover.png", {
       frameWidth: 100,
       frameHeight: 100
     });
@@ -100,6 +100,10 @@ class preloadGame extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 128
     });
+    this.load.spritesheet("rover", "assets/sprites/hexagon.png", {
+      frameWidth: 128,
+      frameHeight: 128
+    });
     this.load.spritesheet("ice", "assets/sprites/ice.png", {
       frameWidth: 128,
       frameHeight: 128
@@ -108,6 +112,12 @@ class preloadGame extends Phaser.Scene {
       frameWidth: 300,
       frameHeight: 128
     });
+    this.load.spritesheet("levelthumb", "assets/sprites/select_icons.png", {
+      frameWidth: 128,
+      frameHeight: 128
+    });
+    this.load.image("levelpages", "assets/sprites/levelpages.png");
+    this.load.image("transp", "assets/sprites/transp.png");
     this.load.image('blank', 'assets/sprites/blank.png');
     this.load.image('check', 'assets/sprites/checkmark.png');
     this.load.image('dot2', 'assets/sprites/dot2.png');
