@@ -434,6 +434,51 @@ class endGameChal extends Phaser.Scene {
 				i++;
 				j++;
 			}
+
+			if (key == 'rover') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.roverIcon = this.add.image(xOffsetT + x * xSpace, y, 'rover', 3).setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
+				var newVal = value - this.Main.board.tally[11]
+				if (newVal <= 0) {
+					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
+					this.end.add(check)
+				} else {
+					this.roverText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+					this.roverText.setText(newVal);
+					this.end.add(this.roverText)
+				}
+				this.end.add(this.roverIcon)
+
+				i++;
+				j++;
+			}
+			if (key == 'wild') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.wildIcon = this.add.image(xOffsetT + x * xSpace, y, 'wild', 3).setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
+				var newVal = value - this.Main.board.tally[12]
+				if (newVal <= 0) {
+					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
+					this.end.add(check)
+				} else {
+					this.wildText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+					this.wildText.setText(newVal);
+					this.end.add(this.wildText)
+				}
+				this.end.add(this.wildIcon)
+
+				i++;
+				j++;
+			}
 			//console.log(key + ' ' + value); // "a 5", "b 7", "c 9"
 
 		});

@@ -80,7 +80,7 @@ class Dot {
   destroy() {
     if (this.strength == 0) {
       this.disabled = true
-      this.board.tally[this.color]++
+      this.board.tally[this.type]++
       this.redrawThisColumn();
       this.adjustAboveDotCoordinates(this.dotSize);
       this.deleteThisFromArray();
@@ -119,7 +119,7 @@ class Dot {
       dot.board.scene.tweens.add({
         targets: dot.image,
         y: posY,
-        duration: 100,
+        duration: 50,
         //delay: index * 50,
 
       })

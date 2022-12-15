@@ -66,17 +66,40 @@ class UI extends Phaser.Scene {
     this.tallyContainer = this.add.container()
     var dotSize = 125
     this.xOffset = (game.config.width - (dotColors.length * dotSize)) / 2
+    var tallyBG = this.add.image(450, 775, 'blank').setTint(0x393939).setAlpha(.8)
+    tallyBG.displayWidth = 850
+    tallyBG.displayHeight = 500
+
+    this.tallyContainer.add(tallyBG)
     this.tallyArray = []
-    for (var i = 0; i < dotColors.length; i++) {
-      var testDot = this.add.image(this.xOffset + dotSize * i + dotSize / 2, 1610, 'dot2').setTint(dotColors[i])
+    for (var i = 0; i < this.Main.board.tally.length; i++) {
+      if (i < 6) {
+        var x = i
+        var tX = this.xOffset + dotSize * x + dotSize / 2
+        var tTextY = 650
+        var tIconY = 660
+      } else if (i < 12) {
+        var x = i - 6
+        var tX = this.xOffset + dotSize * x + dotSize / 2
+        var tTextY = 800
+        var tIconY = 810
+      } else {
+        var x = i - 12
+        var tX = this.xOffset + dotSize * x + dotSize / 2
+        var tTextY = 950
+        var tIconY = 960
+      }
+
+      var testDot = this.add.image(tX, tIconY, 'dot2').setTint(dotColors[i])
       testDot.displayWidth = this.Main.spriteSize * .50
       testDot.displayHeight = this.Main.spriteSize * .50
       this.tallyContainer.add(testDot)
-      var tallyText = this.add.text(this.xOffset + dotSize * i + dotSize / 2, 1600 - (this.Main.spriteSize * .50) / 1.5, '0', { fontFamily: 'PixelFont', fontSize: '90px', color: '#F0B060', align: 'left' }).setOrigin(.5, 1)
+      var tallyText = this.add.text(tX, tTextY - (this.Main.spriteSize * .50) / 1.5, '0', { fontFamily: 'PixelFont', fontSize: '90px', color: '#F0B060', align: 'left' }).setOrigin(.5, 1)
       this.tallyContainer.add(tallyText)
       this.tallyArray.push(tallyText)
     }
-    this.tallyContainer.setAlpha(0)
+    this.tallyContainer.setAlpha(1)
+    this.tallyContainer.setPosition(0, -1640)
 
     if (gameMode == 3) {
       this.setupGoals()
@@ -114,9 +137,12 @@ class UI extends Phaser.Scene {
       this.scoreText.setText(this.Main.board.moves)
       //  this.squareText.setText(this.Main.board.tally[10])
       var total = 0
-      for (var i = 0; i < dotColors.length; i++) {
+      for (var i = 0; i < this.Main.board.tally.length; i++) {
         this.tallyArray[i].setText(this.Main.board.tally[i])
-        total += this.Main.board.tally[i]
+        if (i < 6) {
+          total += this.Main.board.tally[i]
+        }
+
       }
       if (gameMode != 3) {
         this.totalText.setText(total)
@@ -401,38 +427,7 @@ class UI extends Phaser.Scene {
         i++;
         j++;
       }
-      /* if (key == 'squareBomb') {
-        if (i > 2) {
-          y = 160;
-          x = i - 3;
-        } else {
-          x = i;
-        }
-        this.squareBombIcon = this.add.image(xOffsetT + x * xSpace, y, 'bomb1').setScale(.5).setAlpha(1);
-        this.squareBombText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
-        this.squareBombGoal = value;
-        this.squareBombText.setText(value);
-        this.squareBombWin = true;
-        this.winCount++;
-        i++;
-        j++;
-      } */
-      /*  if (key == 'rover') {
-         if (i > 2) {
-           y = 160;
-           x = i - 3;
-         } else {
-           x = i;
-         }
-         this.roverIcon = this.add.image(xOffsetT + x * xSpace, y, 'rover1').setScale(.5).setAlpha(1).setTint(0xb8b8b8);
-         this.roverText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
-         this.roverGoal = value;
-         this.roverText.setText(value);
-         this.roverWin = true;
-         this.winCount++;
-         i++;
-         j++;
-       } */
+
       if (key == 'bomb') {
         if (i > 2) {
           y = 140;
@@ -445,6 +440,38 @@ class UI extends Phaser.Scene {
         this.bombGoal = value;
         this.bombText.setText(value);
         this.bombWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+      if (key == 'rover') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.roverIcon = this.add.image(xOffsetT + x * xSpace, y, 'rover', 3).setScale(.35).setAlpha(1).setTint(0xb8b8b8);
+        this.roverText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.roverGoal = value;
+        this.roverText.setText(value);
+        this.roverWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+      if (key == 'wild') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.wildIcon = this.add.image(xOffsetT + x * xSpace, y, 'wild').setScale(.35).setAlpha(1).setTint(0xb8b8b8);
+        this.wildText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.wildrGoal = value;
+        this.wildText.setText(value);
+        this.wildWin = true;
         this.winCount++;
         i++;
         j++;
@@ -550,7 +577,24 @@ class UI extends Phaser.Scene {
         this.iceWin = false;
       }
     }
-
+    if (this.roverWin) {
+      this.roverText.setText(this.roverGoal - this.Main.board.tally[11]);
+      if (this.Main.board.tally[11] >= this.roverGoal) {
+        this.tweenCount(this.roverText, this.roverIcon);
+        this.roverGoal = -100
+        this.winComplete++;
+        this.roverWin = false;
+      }
+    }
+    if (this.wildWin) {
+      this.wildText.setText(this.wildGoal - this.Main.board.tally[12]);
+      if (this.Main.board.tally[12] >= this.wildGoal) {
+        this.tweenCount(this.wildText, this.wildIcon);
+        this.wildGoal = -100
+        this.winComplete++;
+        this.wildWin = false;
+      }
+    }
     if (this.winCount == this.winComplete) {
       // return true;
       //console.log('you win');
@@ -591,6 +635,12 @@ class UI extends Phaser.Scene {
         duration: 500,
         ease: 'Bounce'
       })
+      var menuTween = this.tweens.add({
+        targets: this.tallyContainer,
+        y: 0,
+        duration: 500,
+        ease: 'Bounce'
+      })
 
     }
     if (this.menuGroup.y == -270) {
@@ -602,6 +652,12 @@ class UI extends Phaser.Scene {
       var menuTween = this.tweens.add({
         targets: this.menuGroup,
         y: 0,
+        duration: 500,
+        ease: 'Bounce'
+      })
+      var menuTween = this.tweens.add({
+        targets: this.tallyContainer,
+        y: -1640,
         duration: 500,
         ease: 'Bounce'
       })

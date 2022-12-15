@@ -242,6 +242,8 @@ class selectGame extends Phaser.Scene {
         var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(0x333333);
       } else if (key == 'rover') {
         var icon = this.add.image(xOffsetT + x * xSpace, y, 'rover', 3).setScale(iconScale).setAlpha(1).setTint(0x333333);
+      } else if (key == 'wild') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'wild').setScale(iconScale).setAlpha(1);
       }
 
       var text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', value, labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
@@ -262,7 +264,7 @@ class selectGame extends Phaser.Scene {
       this.scene.launch('playGame');
 
       this.scene.launch('UI')
-
+      lbFlag = false
     }, this)
 
 

@@ -32,7 +32,8 @@ class startGame extends Phaser.Scene {
     zenButton.on('pointerdown', this.zenHandler, this);
     var puzzleButton = this.add.image(450, 850, 'mode_buttons', 3).setInteractive()
     puzzleButton.on('pointerdown', this.puzzleHandler, this);
-
+    var puzzleButton = this.add.image(450, 1000, 'mode_buttons', 4).setInteractive()
+    puzzleButton.on('pointerdown', this.customHandler, this);
 
 
 
@@ -64,6 +65,7 @@ class startGame extends Phaser.Scene {
       square: true
     }
     gameMode = 0
+    lbFlag = false
     this.scene.start('playGame');
     this.scene.launch('UI');
   }
@@ -89,6 +91,7 @@ class startGame extends Phaser.Scene {
       square: true
     }
     gameMode = 1
+    lbFlag = false
     this.scene.start('playGame');
     this.scene.launch('UI');
   }
@@ -114,6 +117,7 @@ class startGame extends Phaser.Scene {
       square: true
     }
     gameMode = 2
+    lbFlag = false
     this.scene.start('playGame');
     this.scene.launch('UI');
   }
@@ -124,7 +128,13 @@ class startGame extends Phaser.Scene {
     this.scene.start('selectGame');
     //this.scene.launch('UI');
   }
-
+  customHandler() {
+    levelConfig = levels[gameSettings.unlocked]
+    gameMode = 4
+    gameSettings.currentLevel = gameSettings.unlocked
+    this.scene.start('levelBuilder');
+    //this.scene.launch('UI');
+  }
 }
 
 

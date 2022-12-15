@@ -116,6 +116,10 @@ class preloadGame extends Phaser.Scene {
       frameWidth: 128,
       frameHeight: 128
     });
+    this.load.spritesheet("switch", "assets/sprites/switch.png", {
+      frameWidth: 150,
+      frameHeight: 75
+    });
     this.load.image("levelpages", "assets/sprites/levelpages.png");
     this.load.image("transp", "assets/sprites/transp.png");
     this.load.image('blank', 'assets/sprites/blank.png');

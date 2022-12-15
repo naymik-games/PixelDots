@@ -13,7 +13,7 @@ window.onload = function () {
       height: 1640
     },
 
-    scene: [preloadGame, startGame, selectGame, playGame, UI, endGame, endGameChal]
+    scene: [preloadGame, startGame, selectGame, playGame, UI, endGame, endGameChal, levelBuilder]
   }
   game = new Phaser.Game(gameConfig);
   window.focus();
@@ -53,11 +53,11 @@ class playGame extends Phaser.Scene {
     this.allowRover = levelConfig.aR
     this.roverStartCount = levelConfig.rS
     this.allowSquares = levelConfig.square
-    this.allowWild = true
-    this.wildStartCount = 5
+    this.allowWild = levelConfig.aW
+    this.wildStartCount = levelConfig.wS
 
     let dotAllColors = colorGroups[gameSettings.colorSet]
-    if (gameMode == 0 || gameMode == 1) {
+    if ((gameMode == 0 || gameMode == 1) && lbFlag == false) {
       this.dotSize = 125
       this.spriteSize = 85
     } else {

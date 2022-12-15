@@ -13,7 +13,7 @@ var filesToCache = [
   //'/scenes/preview.js',
   '/scenes/endGame.js',
   '/scenes/endGameChallenge.js',
-  // '/scenes/levelBuilder.js',
+  '/scenes/levelBuilder.js',
   '/scenes/UI.js',
 
   '/assets/fonts/topaz.png',
@@ -39,6 +39,7 @@ var filesToCache = [
   '/assets/sprites/button_.png',
   '/assets/sprites/menu.png',
   '/assets/sprites/star.png',
+  '/assets/sprites/switch.png',
 
 
   '/assets/sprites/dot2.png',
