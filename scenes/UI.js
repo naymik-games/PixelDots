@@ -80,7 +80,7 @@ class UI extends Phaser.Scene {
 
     if (gameMode == 3) {
       this.setupGoals()
-      this.onLevelText = this.add.text(640, 1580, 'LV ' + gameSettings.currentLevel, { fontFamily: 'PixelFont', fontSize: '125px', color: '#F0B060', align: 'left' }).setOrigin(0, .5)
+      this.onLevelText = this.add.text(640, 1580, 'LV ' + (gameSettings.currentLevel + 1), { fontFamily: 'PixelFont', fontSize: '125px', color: '#F0B060', align: 'left' }).setOrigin(0, .5)
 
     }
 
@@ -515,8 +515,8 @@ class UI extends Phaser.Scene {
       }
     }
     if (this.squareWin) {
-      this.squareText.setText(this.squareGoal - this.Main.board.tally[10]);
-      if (this.Main.board.tally[10] >= this.squareGoal) {
+      this.squareText.setText(this.squareGoal - this.Main.board.tally[6]);
+      if (this.Main.board.tally[6] >= this.squareGoal) {
         this.tweenCount(this.squareText, this.squareIcon);
         this.squareGoal = -100
         this.winComplete++;
@@ -524,8 +524,8 @@ class UI extends Phaser.Scene {
       }
     }
     if (this.dropWin) {
-      this.dropText.setText(this.dropGoal - this.Main.board.tally[6]);
-      if (this.Main.board.tally[6] >= this.dropGoal) {
+      this.dropText.setText(this.dropGoal - this.Main.board.tally[7]);
+      if (this.Main.board.tally[7] >= this.dropGoal) {
         this.tweenCount(this.dropText, this.dropIcon);
         this.dropGoal = -100
         this.winComplete++;
@@ -533,8 +533,8 @@ class UI extends Phaser.Scene {
       }
     }
     if (this.bombWin) {
-      this.bombText.setText(this.bombGoal - this.Main.board.tally[7]);
-      if (this.Main.board.tally[7] >= this.bombGoal) {
+      this.bombText.setText(this.bombGoal - this.Main.board.tally[8]);
+      if (this.Main.board.tally[8] >= this.bombGoal) {
         this.tweenCount(this.bombText, this.bombIcon);
         this.bombGoal = -100
         this.winComplete++;
@@ -542,113 +542,15 @@ class UI extends Phaser.Scene {
       }
     }
     if (this.iceWin) {
-      this.iceText.setText(this.iceGoal - this.Main.board.tally[8]);
-      if (this.Main.board.tally[8] >= this.iceGoal) {
+      this.iceText.setText(this.iceGoal - this.Main.board.tally[9]);
+      if (this.Main.board.tally[9] >= this.iceGoal) {
         this.tweenCount(this.iceText, this.iceIcon);
         this.iceGoal = -100
         this.winComplete++;
         this.iceWin = false;
       }
     }
-    /* if (this.color0Win) {
-      this.redText.setText(this.redGoal - this.main.tally.red);
-      if (this.main.tally.red >= this.redGoal) {
-        this.tweenCount(this.redText, this.redIcon);
-        this.redGoal = -100
-        this.winComplete++;
-        this.redWin = false;
-      }
-    }
-    if (this.color0Win) {
-      this.purpleText.setText(this.purpleGoal - this.main.tally.purple);
-      if (this.main.tally.purple >= this.purpleGoal) {
-        this.tweenCount(this.purpleText, this.purpleIcon);
-        this.purpleGoal = -100
-        this.winComplete++;
-        this.purpleWin = false;
-      }
-    }
-    if (this.color0Win) {
-      this.orangeText.setText(this.orangeGoal - this.main.tally.orange);
-      if (this.main.tally.orange >= this.orangeGoal) {
-        this.tweenCount(this.orangeText, this.orangeIcon);
-        this.orangeGoal = -100
-        this.winComplete++;
-        this.orangeWin = false;
-      }
-    }
-    if (this.color0Win) {
-      this.brownText.setText(this.brownGoal - this.main.tally.brown);
-      if (this.main.tally.brown >= this.brownGoal) {
-        this.tweenCount(this.brownText, this.brownIcon);
-        this.brownGoal = -100
-        this.winComplete++;
-        this.brownWin = false;
-      }
-    }
-    if (this.color0Win) {
-      this.blueText.setText(this.blueGoal - this.main.tally.blue);
-      if (this.main.tally.blue >= this.blueGoal) {
-        this.tweenCount(this.blueText, this.blueIcon);
-        this.blueGoal = -100
-        this.winComplete++;
-        this.blueWin = false;
-      }
-    }
-    if (this.dropWin) {
-      this.dropText.setText(this.dropGoal - this.main.tally.drop);
-      if (this.main.tally.drop >= this.dropGoal) {
-        this.tweenCount(this.dropText, this.dropIcon);
-        this.dropGoal = -100
-        this.winComplete++;
-        this.dropWin = false;
-      }
-    }
-    if (this.iceWin) {
-      this.iceText.setText(this.iceGoal - this.main.tally.ice);
-      if (this.main.tally.ice >= this.iceGoal) {
-        this.tweenCount(this.iceText, this.iceIcon);
-        this.iceGoal = -100
-        this.winComplete++;
-        this.iceWin = false;
-      }
-    }
-    if (this.bombWin) {
-      this.bombText.setText(this.bombGoal - this.main.tally.bomb);
-      if (this.main.tally.bomb >= this.bombGoal) {
-        this.tweenCount(this.bombText, this.bombIcon);
-        this.bombGoal = -100
-        this.winComplete++;
-        this.bombWin = false;
-      }
-    }
-    if (this.squareWin) {
-      this.sixText.setText(this.sixGoal - this.main.tally.square);
-      if (this.main.tally.square >= this.sixGoal) {
-        this.tweenCount(this.sixText, this.sixIcon);
-        this.sixGoal = -100
-        this.winComplete++;
-        this.sixWin = false;
-      }
-    } */
-    /* if (this.gemWin) {
-      this.gemText.setText(this.gemGoal - this.main.tally.gem);
-      if (this.main.tally.gem >= this.gemGoal) {
-        this.tweenCount(this.gemText, this.gemIcon);
-        this.gemGoal = -100
-        this.winComplete++;
-        this.gemWin = false;
-      }
-    }
-    if (this.roverWin) {
-      this.roverText.setText(this.roverGoal - this.main.tally.rover);
-      if (this.main.tally.rover >= this.roverGoal) {
-        this.tweenCount(this.roverText, this.roverIcon);
-        this.roverGoal = -100
-        this.winComplete++;
-        this.roverWin = false;
-      }
-    } */
+
     if (this.winCount == this.winComplete) {
       // return true;
       //console.log('you win');
@@ -764,7 +666,7 @@ class UI extends Phaser.Scene {
       },
       // particle scale: from 1 to zero
       scale: {
-        start: .8,
+        start: .6,
         end: 0
       },
       // particle alpha: from opaque to transparent

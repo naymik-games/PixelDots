@@ -11,7 +11,7 @@ class Board {
     this.squareCompleted = false
     this.numColors = numColors
     this.redrawTheseColumns = {};
-    this.tally = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    this.tally = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     //this.specialTally = [0, 0, 0, 0]
     this.moves = 0
     //this.squareTally = 0
@@ -53,7 +53,8 @@ class Board {
     dotImg.setTint(dotColors[dot.color])
     dotImg.displayWidth = this.scene.spriteSize
     dotImg.displayHeight = this.scene.spriteSize
-    dotImg.setPosition(game.config.width / 2, -game.config.height / 2);
+    let posX = this.scene.xOffset + this.scene.dotSize * x + this.scene.dotSize / 2;
+    dotImg.setPosition(posX, -game.config.height / 2);
     dot.image = dotImg
     // dot.events.onInputDown.add(this.clickDot, this);
     // dot.events.onInputUp.add(this.upDot, this);
@@ -75,7 +76,7 @@ class Board {
     dot.image.setAlpha(1)
     //   dot.image.displayWidth = this.scene.spriteSize
     //  dot.image.displayHeight = this.scene.spriteSize
-    dot.image.setPosition(posX, posY)
+    // dot.image.setPosition(posX, posY)
     this.dots[x].unshift(dot);
     //this.newDots.push({x: x, y:0})
   }
@@ -89,7 +90,7 @@ class Board {
   }
   ///////OVERLAY
   checkIce(coordinates) {
-    if (this.overlay[coordinates[0]][coordinates[1]].type == 3) {
+    if (this.overlay[coordinates[0]][coordinates[1]].type == 9) {
       console.log('ice ice baby')
       if (this.overlay[coordinates[0]][coordinates[1]].strength > 0) {
         this.overlay[coordinates[0]][coordinates[1]].strength--
@@ -97,7 +98,7 @@ class Board {
 
       } else {
         this.overlay[coordinates[0]][coordinates[1]].type = 0
-        this.tally[8]++
+        this.tally[9]++
         this.scene.addScore()
       }
       this.overlay[coordinates[0]][coordinates[1]].image.setFrame(this.overlay[coordinates[0]][coordinates[1]].strength)
@@ -123,7 +124,21 @@ class Board {
       dot.destroy();
     });
   }
+  deleteWildSquare() {
+    this.selectedDots.forEach(function (dot) {
+      if (dot.color == -1) {
+        dot.explode();
+      }
+
+    });
+    this.selectedDots.forEach(function (dot) {
+      if (dot.color == -1) {
+        dot.destroy();
+      }
+    });
+  }
   deleteAllDotsofColor() {
+    this.deleteWildSquare()
     var color = this.selectedColor;
     var dotsOfColor = this.findAllByColor(color);
     dotsOfColor.forEach(function (dot) {
@@ -149,7 +164,16 @@ class Board {
       var column = board.dots[x];
       // var newHTML = "";
       column.forEach(function (dot) {
-        //  newHTML += dot.html();
+        let posX = board.scene.xOffset + board.scene.dotSize * x + board.scene.dotSize / 2;
+        let posY = board.scene.yOffset + board.scene.dotSize * dot.coordinates[1] + board.scene.dotSize / 2
+        board.scene.tweens.add({
+          targets: dot.image,
+          x: posX,
+          y: posY,
+          duration: 700,
+          ease: 'cubit'
+        })
+        //dot.image.setPosition(posX, posY)
       });
       //$("#column-" + x).html(newHTML);
     }
@@ -160,7 +184,7 @@ class Board {
     var container = [];
     this.dots.forEach(function (column) {
       column.forEach(function (dot) {
-        if (dot.type == 6) container.push(dot);
+        if (dot.type == 11) container.push(dot);
       });
     });
     return container;
@@ -171,7 +195,7 @@ class Board {
   findDrops() {
     var drops = []
     for (var c = 0; c < this.width; c++) {
-      if (this.dots[c][this.height - 1].type == 1) {
+      if (this.dots[c][this.height - 1].type == 7) {
         drops.push({ x: c, y: this.height - 1 })
       }
     }
@@ -252,17 +276,59 @@ class Board {
     return x >= 0 && y >= 0 && x < this.width && y < this.height;
   }
   validDrag(dot) {
-    return this.rightColor(dot) && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.canSelectDot(dot) && this.notBlocked(dot);
+
+    if (this.rightColor(dot) && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.canSelectDot(dot) && this.notBlocked(dot)) {
+      return true
+    } /* else if (dot.color == -1 && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.canSelectDot(dot) && this.notBlocked(dot)) {
+      //this.board.selectedColor = dot.color;
+      return true
+    } else if (this.lastSelectedDot().color == -1 && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.canSelectDot(dot) && this.notBlocked(dot)) {
+      //this.board.selectedColor = dot.color;
+      return true
+    } */
   }
 
+
+
+  connects(dot1, dot2) {
+    if (dot1 == undefined || dot2 == undefined) { return }
+    //return this.b.board[dot1.row][dot1.col].value === this.b.board[dot2.row][dot2.col].value && this.b.areNext(dot1, dot2)
+
+    if (this.b.board[dot1.row][dot1.col].value === this.b.board[dot2.row][dot2.col].value && this.b.areNext(dot1, dot2)) {
+      return true
+    } else if (this.valueAt(dot1.row, dot1.col) == gameOptions.wildValue && this.b.areNext(dot1, dot2)) {
+      this.b.setValue(dot1.row, dot1.col, this.b.valueAt(dot2.row, dot2.col))
+      return true
+    } else if (this.valueAt(dot2.row, dot2.col) == gameOptions.wildValue && this.b.areNext(dot1, dot2)) {
+      this.b.setValue(dot2.row, dot2.col, this.b.valueAt(dot1.row, dot1.col))
+      return true
+    }
+
+
+    //return false
+  }
+
+
+
   rightColor(dot) {
-    return dot.color == this.selectedColor;
+    if (this.selectedColor == -1) {
+      if (dot.color > -1) {
+        this.selectedColor = dot.color
+      }
+      return true
+    } else if (dot.color == -1) {
+      return true
+
+    } else {
+      return dot.color == this.selectedColor
+    }
+
   }
   canSelectDot(dot) {
     return dot.selectable
   }
   notBlocked(dot) {
-    if (this.overlay[dot.coordinates[0]][dot.coordinates[1]].type == 4) {
+    if (this.overlay[dot.coordinates[0]][dot.coordinates[1]].type == 10) {
       return false
     }
     return true
@@ -272,9 +338,54 @@ class Board {
     return neighbors.includes(dot);
 
   }
+  randomNeighbor(dot) {
+    var neighbors = dot.neighbors();
+    var found = false
+    //var temp = sample(neighbors)
+    // console.log(temp)
+    while (!found) {
+      var temp = sample(neighbors)
+      if (this.validCoordinates(temp.coordinates[0], temp.coordinates[1])) {
+        found = true
 
+      }
+    }
+    return temp
+  }
   notAlreadySelected(dot) {
     return !this.selectedDots.includes(dot);
+
+  }
+  moveRover(rover, target) {
+    // console.log(rover.coordinates)
+    //  console.log(target.coordinates)
+    var roverX = rover.image.x
+    var roverY = rover.image.y
+    var targetX = target.image.x
+    var targetY = target.image.y
+    var swap = this.swapItems(rover.coordinates[0], rover.coordinates[1], target.coordinates[0], target.coordinates[1])
+
+    //console.log(swap)
+    //rover
+    this.dots[swap[1].col][swap[1].row].image.setAlpha(.6)
+    this.dots[swap[0].col][swap[0].row].image.setAlpha(.6)
+
+
+    // this.dots[swap[0].col][swap[0].row].image.setAlpha(.6)
+    //  let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
+    //  let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
+    /* var r = this.scene.tweens.add({
+      targets: this.dots[swap[1].col][swap[1].row].image,
+      x: this.scene.xOffset + this.scene.dotSize * swap[0].col + this.scene.dotSize / 2,
+      y: this.scene.yOffset + this.scene.dotSize * swap[0].row + this.scene.dotSize / 2,
+      duration: 500,
+    })
+    var t = this.scene.tweens.add({
+      targets: this.dots[swap[0].col][swap[0].row].image,
+      x: this.scene.xOffset + this.scene.dotSize * swap[1].col + this.scene.dotSize / 2,
+      y: this.scene.yOffset + this.scene.dotSize * swap[1].row + this.scene.dotSize / 2,
+      duration: 500
+    }) */
 
   }
   sameDot = function (dotA, dotB) {
@@ -318,10 +429,13 @@ class Board {
     }
     return false;
   }
-  swapItems(row, col, row2, col2) {
-    let tempObject = Object.assign(this.board[row][col]);
-    this.board[row][col] = Object.assign(this.board[row2][col2]);
-    this.board[row2][col2] = Object.assign(tempObject);
+  swapItems(col, row, col2, row2) {
+    let tempObject = Object.assign(this.dots[col][row]);
+    this.dots[col][row] = Object.assign(this.dots[col2][row2]);
+    this.dots[col2][row2] = Object.assign(tempObject);
+    /* let tempObject = this.dots[col][row];
+    this.dots[col][row] = this.dots[col2][row2];
+    this.dots[col2][row2] = tempObject */
     return [{
       row: row,
       col: col,

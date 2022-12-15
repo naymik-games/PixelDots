@@ -88,7 +88,7 @@ function shuffle(array) {
 
 let levels = [
   {
-    id: 0, w: 8, h: 12, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, square: true, win: { color0: 10, color1: 10, drop: 2, color2: 3 }
+    id: 0, w: 8, h: 12, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: true, rS: 1, square: true, win: { color0: 10, color1: 10, rover: 1 }
   },
   {
     id: 1, w: 6, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, square: true, win: { color0: 10, color1: 10 }

@@ -41,11 +41,11 @@ class endGameChal extends Phaser.Scene {
 					currentLevel: 0,
 					colorSet: 0
 				} */
-		var titleText = this.add.text(450, 75, gameModeNames[gameMode] + ' ' + gameSettings.currentLevel, { fontFamily: 'PixelFont', fontSize: '175px', color: '#000000', align: 'left' }).setOrigin(.5).setInteractive()
+		var titleText = this.add.text(450, 75, gameModeNames[gameMode] + ' ' + (gameSettings.currentLevel + 1), { fontFamily: 'PixelFont', fontSize: '175px', color: '#000000', align: 'left' }).setOrigin(.5).setInteractive()
 		this.end.add(titleText)
 
 		gameSettings.totalDots += total
-		gameSettings.totalSquares += this.Main.board.tally[10]
+		gameSettings.totalSquares += this.Main.board.tally[6]
 
 		var scorelabel = this.add.text(225, 425, 'Score', { fontFamily: 'PixelFont', fontSize: '70px', color: '#000000', align: 'left' }).setOrigin(.5)
 		this.end.add(scorelabel)
@@ -348,7 +348,7 @@ class endGameChal extends Phaser.Scene {
 					x = i;
 				}
 				this.dropIcon = this.add.image(xOffsetT + x * xSpace, y, 'arrow').setScale(iconScale).setAlpha(1).setTint(0xF1C40F);
-				var newVal = value - this.Main.board.tally[6]
+				var newVal = value - this.Main.board.tally[7]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
 					this.end.add(check)
@@ -372,7 +372,7 @@ class endGameChal extends Phaser.Scene {
 					x = i;
 				}
 				this.iceIcon = this.add.image(xOffsetT + x * xSpace, y, 'ice', 3).setScale(iconScale).setAlpha(1)
-				var newVal = value - this.Main.board.tally[8]
+				var newVal = value - this.Main.board.tally[9]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
 					this.end.add(check)
@@ -397,7 +397,7 @@ class endGameChal extends Phaser.Scene {
 					x = i;
 				}
 				this.squareIcon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
-				var newVal = value - this.Main.board.tally[10]
+				var newVal = value - this.Main.board.tally[6]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
 					this.end.add(check)
@@ -406,7 +406,7 @@ class endGameChal extends Phaser.Scene {
 					this.iceText.setText(newVal);
 					this.end.add(this.squareText)
 				}
-				this.end.add(this.squareText)
+				this.end.add(this.squareIcon)
 
 				i++;
 				j++;
@@ -420,16 +420,16 @@ class endGameChal extends Phaser.Scene {
 					x = i;
 				}
 				this.bombIcon = this.add.image(xOffsetT + x * xSpace, y, 'bomb', 3).setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
-				var newVal = value - this.Main.board.tally[7]
+				var newVal = value - this.Main.board.tally[8]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
 					this.end.add(check)
 				} else {
 					this.bombText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
-					this.iceText.setText(newVal);
+					this.bombText.setText(newVal);
 					this.end.add(this.bombText)
 				}
-				this.end.add(this.bombText)
+				this.end.add(this.bombIcon)
 
 				i++;
 				j++;

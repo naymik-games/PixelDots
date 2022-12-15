@@ -53,6 +53,8 @@ class playGame extends Phaser.Scene {
     this.allowRover = levelConfig.aR
     this.roverStartCount = levelConfig.rS
     this.allowSquares = levelConfig.square
+    this.allowWild = true
+    this.wildStartCount = 5
 
     let dotAllColors = colorGroups[gameSettings.colorSet]
     if (gameMode == 0 || gameMode == 1) {
@@ -139,6 +141,7 @@ class playGame extends Phaser.Scene {
     let row = Math.floor((pointer.y - this.yOffset) / this.dotSize);
     let col = Math.floor((pointer.x - this.xOffset) / this.dotSize);
     if (!this.board.validCoordinates(col, row)) { return }
+    console.log(this.board.dots[col][row])
     if (gameMode == 1) {
       if (!this.timeStarted) {
         this.events.emit('time');
@@ -166,6 +169,12 @@ class playGame extends Phaser.Scene {
 
     console.log('row ' + row + ' col ' + col)
     this.board.dots[col][row].activate();
+    if (this.board.dots[col][row].color == -1) {
+      this.board.selectedColor = -1
+    } else {
+      this.board.selectedColor = this.board.dots[col][row].color;
+    }
+
     this.board.dragging = true;
   }
   dotMove(pointer) {
@@ -262,6 +271,12 @@ class playGame extends Phaser.Scene {
       if (this.allowRover) {
         var rovers = this.board.findRovers()
         console.log(rovers)
+        if (rovers) {
+          var n = this.board.randomNeighbor(rovers[0])
+          this.board.moveRover(rovers[0], n)
+
+        }
+
       }
       this.board.moves++
       this.addScore()
@@ -275,15 +290,31 @@ class playGame extends Phaser.Scene {
 
   }
   drawBoard() {
+    if (this.allowWild) {
+      console.log('making rovers')
+      var placedR = 0
+      while (placedR < this.wildStartCount) {
+        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
+        var randY = Phaser.Math.Between(0, this.boardHeight - 1)
+        if (this.board.dots[randX][randY].type < 6) {
+
+          this.board.dots[randX][randY].color = -1
+          this.board.dots[randX][randY].type = 12
+          this.board.dots[randX][randY].image.setTexture('wild').clearTint()
+          placedR++
+        }
+      }
+    }
+
     if (this.allowRover) {
       console.log('making rovers')
       var placedR = 0
-      while (placedR < 5) {
+      while (placedR < this.roverStartCount) {
         var randX = Phaser.Math.Between(0, this.boardWidth - 1)
         var randY = Phaser.Math.Between(0, this.boardHeight - 2)
-        if (this.board.dots[randX][randY].type == 0) {
+        if (this.board.dots[randX][randY].type < 6) {
           this.board.dots[randX][randY].strength = 3
-          this.board.dots[randX][randY].type = 6
+          this.board.dots[randX][randY].type = 11
           this.board.dots[randX][randY].image.setTexture('rover', 3)
           placedR++
         }
@@ -296,9 +327,9 @@ class playGame extends Phaser.Scene {
       while (placedB < this.bombStartCount) {
         var randX = Phaser.Math.Between(0, this.boardWidth - 1)
         var randY = Phaser.Math.Between(0, this.boardHeight - 2)
-        if (this.board.dots[randX][randY].type == 0) {
+        if (this.board.dots[randX][randY].type < 6) {
           this.board.dots[randX][randY].strength = 3
-          this.board.dots[randX][randY].type = 2
+          this.board.dots[randX][randY].type = 8
           this.board.dots[randX][randY].image.setTexture('bomb', 3)
           placedB++
         }
@@ -309,10 +340,10 @@ class playGame extends Phaser.Scene {
       while (placed < this.dropStartCount) {
         var randX = Phaser.Math.Between(0, this.boardWidth - 1)
         var randY = Phaser.Math.Between(0, this.boardHeight - 2)
-        if (this.board.dots[randX][randY].type == 0) {
+        if (this.board.dots[randX][randY].type < 6) {
           this.board.dots[randX][randY].selectable = false
           this.board.dots[randX][randY].color = 6
-          this.board.dots[randX][randY].type = 1
+          this.board.dots[randX][randY].type = 7
           this.board.dots[randX][randY].image.setTexture('arrow').setTint(0xF1C40F)
           placed++
         }
@@ -323,10 +354,10 @@ class playGame extends Phaser.Scene {
       while (placed < this.iceStartCount) {
         var randX = Phaser.Math.Between(0, this.boardWidth - 1)
         var randY = Phaser.Math.Between(0, this.boardHeight - 1)
-        if (this.board.overlay[randX][randY].type == 0) {
+        if (this.board.overlay[randX][randY].type < 6) {
           this.board.overlay[randX][randY].selectable = false
           this.board.overlay[randX][randY].strength = 3
-          this.board.overlay[randX][randY].type = 3
+          this.board.overlay[randX][randY].type = 9
           let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
           let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
           var ice = this.add.image(xpos, ypos, 'ice', 3)
@@ -343,10 +374,10 @@ class playGame extends Phaser.Scene {
       while (placed < this.blockStartCount) {
         var randX = Phaser.Math.Between(0, this.boardWidth - 1)
         var randY = Phaser.Math.Between(0, this.boardHeight - 1)
-        if (this.board.overlay[randX][randY].type == 0) {
+        if (this.board.overlay[randX][randY].type < 6) {
           this.board.overlay[randX][randY].selectable = false
 
-          this.board.overlay[randX][randY].type = 4
+          this.board.overlay[randX][randY].type = 10
           let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
           let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
           var block = this.add.image(xpos, ypos, 'block')

@@ -8,11 +8,24 @@
 //6 rover tally index 11
 //5 + type--5 + 1 = 6
 //[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+/* 0 color0
+1 color1
+2 color2
+3 color3
+4 color4
+5 color5
+6 square (not a type)
+7 drop 
+8 bomb
+9 ice 
+10 block 
+11 rover 
+12 wild */
 class Dot {
   constructor(id, x, y, color, board, dotSize) {
     this.coordinates = [x, y];
     this.color = color;
-    this.type = 0;
+    this.type = color;
     this.strength = 0
     this.board = board;
     this.disabled = false;
@@ -22,6 +35,7 @@ class Dot {
     this.selectable = true
     this.disabled = false
     this.movesGoal = 20
+    this.direction = 0
     /* if (this.color == 2) {
       this.selectable = false
     } else {
@@ -34,7 +48,7 @@ class Dot {
     //var visibleDot = this.findDOMObject();
     //visibleDot.addClass("active");
 
-    this.board.selectedColor = this.color;
+    //this.board.selectedColor = this.color;
     this.board.selectedDots.push(this);
     this.image.setAlpha(.5)
 
@@ -52,10 +66,10 @@ class Dot {
     if (this.strength < 1) {
       this.image.setActive(false)
       this.image.setVisible(false)
-    } else if (this.type == 2) {
+    } else if (this.type == 8) {
       this.strength--
       this.image.setFrame(this.strength)
-    } else if (this.type == 6) {
+    } else if (this.type == 11) {
       this.strength--
       this.image.setFrame(this.strength)
     }
@@ -71,11 +85,11 @@ class Dot {
       this.adjustAboveDotCoordinates(this.dotSize);
       this.deleteThisFromArray();
       this.fillInSpaceLeft();
-      if (this.type == 2) {
+      if (this.type == 8) {
         this.board.scene.explode(this.coordinates[0], this.coordinates[1])
         console.log('bomb exploded')
         this.board.extraDots.push(this.coordinates)
-        this.board.tally[7]++
+        this.board.tally[8]++
       }
     } else {
       this.image.setAlpha(1)
@@ -100,17 +114,15 @@ class Dot {
   adjustAboveDotCoordinates() {
     this.aboveDots().forEach(function (dot, index) {
       dot.coordinates[1] += 1;
-      dot.image.y += dot.dotSize
-      /* dot.board.scene.tweens.add({
+      let posY = dot.board.scene.yOffset + dot.board.scene.dotSize * dot.coordinates[1] + dot.board.scene.dotSize / 2
+      //dot.image.y += dot.dotSize
+      dot.board.scene.tweens.add({
         targets: dot.image,
-        y: '+=' + dot.dotSize,
-        duration: 500,
-        delay: index * 50,
-        onComplete: function () {
-          //dot.deleteThisFromArray()
-          
-        }
-      }) */
+        y: posY,
+        duration: 100,
+        //delay: index * 50,
+
+      })
       //dot.image.y += 110
     });
   }

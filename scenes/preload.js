@@ -120,6 +120,7 @@ class preloadGame extends Phaser.Scene {
     this.load.image("transp", "assets/sprites/transp.png");
     this.load.image('blank', 'assets/sprites/blank.png');
     this.load.image('check', 'assets/sprites/checkmark.png');
+    this.load.image('wild', 'assets/sprites/circle_outline.png');
     this.load.image('dot2', 'assets/sprites/dot2.png');
     this.load.image('arrow', 'assets/sprites/arrow.png');
     this.load.image('playagain', 'assets/sprites/button_.png');

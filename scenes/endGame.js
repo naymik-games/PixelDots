@@ -44,7 +44,7 @@ class endGame extends Phaser.Scene {
 		this.end.add(titleText)
 
 		gameSettings.totalDots += total
-		gameSettings.totalSquares += this.Main.board.tally[10]
+		gameSettings.totalSquares += this.Main.board.tally[6]
 
 		var scorelabel = this.add.text(225, 425, 'Score', { fontFamily: 'PixelFont', fontSize: '70px', color: '#000000', align: 'left' }).setOrigin(.5)
 		this.end.add(scorelabel)

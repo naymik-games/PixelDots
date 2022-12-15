@@ -197,15 +197,11 @@ class selectGame extends Phaser.Scene {
     if (this.preview) {
       this.preview.destroy()
     }
-    // console.log(levels[onLevel].length);
-    //  for (var i = 0; i < levels[onLevel].length; i++) {
     var i = 0;
     var j = 0;
     var x = 0;
     var y = 225;
     var y2 = 300
-    this.winCount = 0;
-    this.winComplete = 0;
     var xOffsetT = 250
     var xOffsetI = 310
     var xSpace = 175
@@ -218,16 +214,36 @@ class selectGame extends Phaser.Scene {
     Object.entries(winC).forEach(([key, value]) => {
 
 
-
-      if (key == 'color0') {
-      }
       if (i > 2) {
         y = y2;
         x = i - 3;
       } else {
         x = i;
       }
-      var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(dotColors[0]);
+      if (key == 'color0') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[0]);
+      } else if (key == 'color1') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[1]);
+      } else if (key == 'color2') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[2]);
+      } else if (key == 'color3') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[3]);
+      } else if (key == 'color4') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[4]);
+      } else if (key == 'color5') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[5]);
+      } else if (key == 'drop') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'arrow', 0).setScale(iconScale).setAlpha(1).setTint(0xF1C40F);
+      } else if (key == 'ice') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'ice', 3).setScale(iconScale).setAlpha(1);
+      } else if (key == 'bomb') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'bomb', 3).setScale(iconScale).setTint(0xb8b8b8).setAlpha(1).setTint(0xF1C40F);
+      } else if (key == 'square') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(0x333333);
+      } else if (key == 'rover') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'rover', 3).setScale(iconScale).setAlpha(1).setTint(0x333333);
+      }
+
       var text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', value, labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
 
       this.preview.add(icon)
@@ -237,14 +253,10 @@ class selectGame extends Phaser.Scene {
       j++;
 
 
-
-      //console.log(key + ' ' + value); // "a 5", "b 7", "c 9"
-
     });
-    // console.log(levelSettings.win[i].thing2);
-    //  }
 
-    var play = this.add.bitmapText(450, 375, 'topaz', 'PLAY', 60).setOrigin(.5).setTint(labelColor).setAlpha(1).setInteractive();
+
+    var play = this.add.bitmapText(450, 400, 'topaz', 'PLAY', 60).setOrigin(.5).setTint(0xF0B060).setAlpha(1).setInteractive();
     play.on('pointerdown', function () {
       this.scene.stop()
       this.scene.launch('playGame');
