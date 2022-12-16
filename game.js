@@ -55,6 +55,8 @@ class playGame extends Phaser.Scene {
     this.allowSquares = levelConfig.square
     this.allowWild = levelConfig.aW
     this.wildStartCount = levelConfig.wS
+    this.allowSlime = levelConfig.aSl
+
 
     let dotAllColors = colorGroups[gameSettings.colorSet]
     if ((gameMode == 0 || gameMode == 1) && lbFlag == false) {
@@ -219,7 +221,7 @@ class playGame extends Phaser.Scene {
     if (this.board.selectedDots.length > 1) {
 
       if (this.board.squareCompleted) {
-        this.board.tally[10]++
+        this.board.tally[6]++
         this.squareBox.clear()
         this.squareBox.lineStyle(5, 0xfafafa, 1);
         this.squareBox.strokeRoundedRect(this.xOffset - 10, this.yOffset - 10, (this.dotSize * this.boardWidth) + 20, (this.dotSize * this.boardHeight) + 20, 15);
@@ -290,6 +292,19 @@ class playGame extends Phaser.Scene {
 
   }
   drawBoard() {
+    if (this.allowSlime) {
+      this.board.underlay[0][0].selectable = false
+
+      this.board.underlay[0][0].type = 13
+      let xpos = this.xOffset + this.dotSize * 0 + this.dotSize / 2;
+      let ypos = this.yOffset + this.dotSize * 0 + this.dotSize / 2
+      var slime = this.add.image(xpos, ypos, 'blank').setTint(0x685570).setAlpha(.7)
+      slime.displayWidth = this.dotSize
+      slime.displayHeight = this.dotSize
+      this.board.underlay[0][0].image = slime
+      this.board.underlay[0][0].image.setDepth(0)
+      this.board.tally[13]++
+    }
     if (this.allowWild) {
       console.log('making rovers')
       var placedR = 0
@@ -361,8 +376,8 @@ class playGame extends Phaser.Scene {
           let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
           let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
           var ice = this.add.image(xpos, ypos, 'ice', 3)
-          ice.displayWidth = this.spriteSize
-          ice.displayHeight = this.spriteSize
+          ice.displayWidth = this.dotSize
+          ice.displayHeight = this.dotSize
           this.board.overlay[randX][randY].image = ice
 
           placed++
@@ -438,8 +453,7 @@ class playGame extends Phaser.Scene {
     }, this);
   }
   addScore() {
-    this
-      .events.emit('score');
+    this.events.emit('score');
   }
   useOneDot() {
     this.events.emit('oneDot');

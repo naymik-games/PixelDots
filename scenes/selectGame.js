@@ -197,6 +197,9 @@ class selectGame extends Phaser.Scene {
     if (this.preview) {
       this.preview.destroy()
     }
+    var back = this.add.image(450, 260, 'blank').setTint(0xfafafa)
+    back.displayWidth = 700
+    back.displayHeight = 200
     var i = 0;
     var j = 0;
     var x = 0;
@@ -206,7 +209,7 @@ class selectGame extends Phaser.Scene {
     var xOffsetI = 310
     var xSpace = 175
     var labelSize = 55
-    var labelColor = 0xfafafa
+    var labelColor = 0x383838
     var iconScale = .5
     var winC = levels[level].win
 
@@ -239,11 +242,14 @@ class selectGame extends Phaser.Scene {
       } else if (key == 'bomb') {
         var icon = this.add.image(xOffsetT + x * xSpace, y, 'bomb', 3).setScale(iconScale).setTint(0xb8b8b8).setAlpha(1).setTint(0xF1C40F);
       } else if (key == 'square') {
-        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(0x333333);
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'square', 0).setScale(iconScale).setAlpha(1).setTint(0xD4D4D4);
       } else if (key == 'rover') {
-        var icon = this.add.image(xOffsetT + x * xSpace, y, 'rover', 3).setScale(iconScale).setAlpha(1).setTint(0x333333);
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'rover', 3).setScale(iconScale).setAlpha(1).setTint(0xD4D4D4);
       } else if (key == 'wild') {
-        var icon = this.add.image(xOffsetT + x * xSpace, y, 'wild').setScale(iconScale).setAlpha(1);
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'wild').setScale(iconScale).setAlpha(1).setTint(0xD4D4D4);
+      } else if (key == 'slime') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(0xD4D4D4);
+        value = levels[level].w * levels[level].h
       }
 
       var text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', value, labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
@@ -258,7 +264,8 @@ class selectGame extends Phaser.Scene {
     });
 
 
-    var play = this.add.bitmapText(450, 400, 'topaz', 'PLAY', 60).setOrigin(.5).setTint(0xF0B060).setAlpha(1).setInteractive();
+    var play = this.add.bitmapText(450, 420, 'topaz', 'PLAY LEVEL ' + (level + 1), 60).setOrigin(.5).setTint(0xF0B060).setAlpha(1).setInteractive();
+    this.preview.add(play)
     play.on('pointerdown', function () {
       this.scene.stop()
       this.scene.launch('playGame');

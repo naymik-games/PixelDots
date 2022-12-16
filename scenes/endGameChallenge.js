@@ -203,7 +203,7 @@ class endGameChal extends Phaser.Scene {
 				} else {
 					x = i;
 				}
-				this.color0Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(dotColors[0]);
+				this.color0Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(dotColors[0]);
 				var newVal = value - this.Main.board.tally[0]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
@@ -228,7 +228,7 @@ class endGameChal extends Phaser.Scene {
 				} else {
 					x = i;
 				}
-				this.color1Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[1]);
+				this.color1Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(colors[1]);
 				var newVal = value - this.Main.board.tally[1]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
@@ -251,7 +251,7 @@ class endGameChal extends Phaser.Scene {
 				} else {
 					x = i;
 				}
-				this.color2Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[2]);
+				this.color2Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(colors[2]);
 				var newVal = value - this.Main.board.tally[2]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
@@ -274,7 +274,7 @@ class endGameChal extends Phaser.Scene {
 				} else {
 					x = i;
 				}
-				this.color3Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[3]);
+				this.color3Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(colors[3]);
 				var newVal = value - this.Main.board.tally[3]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
@@ -298,7 +298,7 @@ class endGameChal extends Phaser.Scene {
 				} else {
 					x = i;
 				}
-				this.color4Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[4]);
+				this.color4Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(colors[4]);
 				var newVal = value - this.Main.board.tally[4]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
@@ -322,7 +322,7 @@ class endGameChal extends Phaser.Scene {
 				} else {
 					x = i;
 				}
-				this.color5Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2', 0).setScale(iconScale).setAlpha(1).setTint(colors[5]);
+				this.color5Icon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(colors[5]);
 				var newVal = value - this.Main.board.tally[5]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
@@ -396,7 +396,7 @@ class endGameChal extends Phaser.Scene {
 				} else {
 					x = i;
 				}
-				this.squareIcon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
+				this.squareIcon = this.add.image(xOffsetT + x * xSpace, y, 'square').setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
 				var newVal = value - this.Main.board.tally[6]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
@@ -464,7 +464,7 @@ class endGameChal extends Phaser.Scene {
 				} else {
 					x = i;
 				}
-				this.wildIcon = this.add.image(xOffsetT + x * xSpace, y, 'wild', 3).setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
+				this.wildIcon = this.add.image(xOffsetT + x * xSpace, y, 'wild').setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
 				var newVal = value - this.Main.board.tally[12]
 				if (newVal <= 0) {
 					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
@@ -475,6 +475,28 @@ class endGameChal extends Phaser.Scene {
 					this.end.add(this.wildText)
 				}
 				this.end.add(this.wildIcon)
+
+				i++;
+				j++;
+			}
+			if (key == 'slime') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.slimeIcon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(iconScale).setAlpha(1).setTint(0x685570);
+				var newVal = levels[gameSettings.currentLevel].w * levels[gameSettings.currentLevel].h - this.Main.board.tally[13]
+				if (newVal <= 0) {
+					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
+					this.end.add(check)
+				} else {
+					this.slimeText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+					this.slimeText.setText(newVal);
+					this.end.add(this.slimeText)
+				}
+				this.end.add(this.slimeIcon)
 
 				i++;
 				j++;

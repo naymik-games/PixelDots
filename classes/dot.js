@@ -73,6 +73,12 @@ class Dot {
       this.strength--
       this.image.setFrame(this.strength)
     }
+    if (levelConfig.aSl) {
+      if (this.isNeighborSlime()) {
+        console.log('Slime')
+        this.board.setSlime(this.coordinates)
+      }
+    }
     if (levelConfig.aI) {
       this.board.checkIce(this.coordinates)
     }
@@ -115,14 +121,14 @@ class Dot {
     this.aboveDots().forEach(function (dot, index) {
       dot.coordinates[1] += 1;
       let posY = dot.board.scene.yOffset + dot.board.scene.dotSize * dot.coordinates[1] + dot.board.scene.dotSize / 2
-      //dot.image.y += dot.dotSize
-      dot.board.scene.tweens.add({
-        targets: dot.image,
-        y: posY,
-        duration: 50,
-        //delay: index * 50,
-
-      })
+      dot.image.y += dot.dotSize
+      /*  dot.board.scene.tweens.add({
+         targets: dot.image,
+         y: posY,
+         duration: 50 * dot.coordinates[1],
+         //delay: index * 50,
+ 
+       }) */
       //dot.image.y += 110
     });
   }
@@ -147,7 +153,16 @@ class Dot {
     this.board.createNewDot(x);
   }
   ///////
-
+  isNeighborSlime() {
+    var n = this.neighbors()
+    var isSlime = false
+    for (let i = 0; i < n.length; i++) {
+      const element = n[i];
+      if (this.board.underlay[element.coordinates[0]][element.coordinates[1]].type == 13) {
+        return true
+      }
+    }
+  }
 
   neighbors() {
     var coords = this.neighborCoordinates();

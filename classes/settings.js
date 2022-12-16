@@ -104,26 +104,27 @@ let defaultGame = {
   rS: 1,
   aW: false,
   wS: 3,
+  aSl: false,
   square: true
 }
 
 let levels = [
   {
-    id: 0, w: 8, h: 12, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: true, rS: 1, aW: false, wS: 3, square: true, win: { color0: 10, color1: 10, rover: 1 }
+    id: 0, w: 8, h: 12, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 1, aW: true, wS: 3, aSl: true, square: true, win: { color0: 10, color1: 10, square: 3, wild: 3, slime: 0 }
   },
   {
-    id: 1, w: 6, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, square: true, win: { color0: 10, color1: 10 }
+    id: 1, w: 6, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, square: true, win: { color0: 10, color1: 10 }
   },
   {
-    id: 2, w: 6, h: 10, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, square: true, win: { color2: 10, color3: 10 }
+    id: 2, w: 6, h: 10, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, square: true, win: { color2: 10, color3: 10 }
   },
   {
-    id: 3, w: 4, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, square: true, win: { color4: 10, color2: 10 }
+    id: 3, w: 4, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, square: true, win: { color4: 10, color2: 10 }
   },
   {
-    id: 4, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, square: true, win: { color4: 10, color2: 10, drop: 4 }
+    id: 4, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, square: true, win: { color4: 10, color2: 10, drop: 4 }
   },
   {
-    id: 5, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, square: true, win: { color4: 10, color2: 10, drop: 4 }
+    id: 5, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, square: true, win: { color4: 10, color2: 10, drop: 4 }
   }
 ]

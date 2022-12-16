@@ -5,6 +5,7 @@ class Board {
     this.scene = scene
     this.dots = [];
     this.overlay = []
+    this.underlay = []
     this.idCount = 0
     this.selectedColor = null
     this.selectedDots = []
@@ -33,13 +34,16 @@ class Board {
 
     var column = [];
     var columnOverlay = []
+    var columnUnderlay = []
     for (var yAxis = 0; yAxis < this.height; yAxis++) {
       var dot = this.addDot(xAxis, yAxis);
       column.push(dot);
       columnOverlay.push({ coordinates: [xAxis, yAxis], image: null, type: 0, strength: 3, color: 8 })
+      columnUnderlay.push({ coordinates: [xAxis, yAxis], image: null, type: 0, strength: 3, color: 8 })
     }
     this.dots.push(column);
     this.overlay.push(columnOverlay)
+    this.underlay.push(columnUnderlay)
 
   };
   addDot(x, y) {
@@ -50,7 +54,7 @@ class Board {
     var dotImg = this.scene.dots.get();
     // console.log(dotImg)
     dotImg.setTexture('dot2', 0)
-    dotImg.setTint(dotColors[dot.color])
+    dotImg.setTint(dotColors[dot.color]).setDepth(1)
     dotImg.displayWidth = this.scene.spriteSize
     dotImg.displayHeight = this.scene.spriteSize
     let posX = this.scene.xOffset + this.scene.dotSize * x + this.scene.dotSize / 2;
@@ -79,6 +83,25 @@ class Board {
     // dot.image.setPosition(posX, posY)
     this.dots[x].unshift(dot);
     //this.newDots.push({x: x, y:0})
+  }
+  setSlime(coordinates) {
+    var x = coordinates[0]
+    var y = coordinates[1]
+    if (this.underlay[x][y].type != 13) {
+      console.log('adding slime ' + x + ', ' + y)
+      this.underlay[x][y].selectable = false
+
+      this.underlay[x][y].type = 13
+      let xpos = this.scene.xOffset + this.scene.dotSize * x + this.scene.dotSize / 2;
+      let ypos = this.scene.yOffset + this.scene.dotSize * y + this.scene.dotSize / 2
+      var slime = this.scene.add.image(xpos, ypos, 'blank').setTint(0x685570).setAlpha(.7)
+      slime.displayWidth = this.scene.dotSize
+      slime.displayHeight = this.scene.dotSize
+      this.underlay[x][y].image = slime
+      this.underlay[x][y].image.setDepth(0)
+      this.tally[13]++
+    }
+
   }
   resetBoard() {
     this.selectedDots.forEach(function (dot) {
@@ -166,14 +189,14 @@ class Board {
       column.forEach(function (dot) {
         let posX = board.scene.xOffset + board.scene.dotSize * x + board.scene.dotSize / 2;
         let posY = board.scene.yOffset + board.scene.dotSize * dot.coordinates[1] + board.scene.dotSize / 2
-        board.scene.tweens.add({
+        /* board.scene.tweens.add({
           targets: dot.image,
           x: posX,
           y: posY,
-          duration: 700,
+          duration: 50 * dot.coordinates[1],
           ease: 'cubit'
-        })
-        //dot.image.setPosition(posX, posY)
+        }) */
+        dot.image.setPosition(posX, posY)
       });
       //$("#column-" + x).html(newHTML);
     }
@@ -363,29 +386,30 @@ class Board {
     var roverY = rover.image.y
     var targetX = target.image.x
     var targetY = target.image.y
-    var swap = this.swapItems(rover.coordinates[0], rover.coordinates[1], target.coordinates[0], target.coordinates[1])
-
+    //var swap = this.swapItems(rover.coordinates[0], rover.coordinates[1], target.coordinates[0], target.coordinates[1])
+    // this.dots[rover.coordinates[0]][rover.coordinates[1]].image.setAlpha(.6)
+    //this.dots[target.coordinates[0]][target.coordinates[1]].image.setAlpha(.6)
     //console.log(swap)
     //rover
-    this.dots[swap[1].col][swap[1].row].image.setAlpha(.6)
-    this.dots[swap[0].col][swap[0].row].image.setAlpha(.6)
+    // this.dots[swap[1].col][swap[1].row].image.setAlpha(.6)
+    //this.dots[swap[0].col][swap[0].row].image.setAlpha(.6)
 
 
     // this.dots[swap[0].col][swap[0].row].image.setAlpha(.6)
     //  let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
     //  let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
-    /* var r = this.scene.tweens.add({
-      targets: this.dots[swap[1].col][swap[1].row].image,
-      x: this.scene.xOffset + this.scene.dotSize * swap[0].col + this.scene.dotSize / 2,
-      y: this.scene.yOffset + this.scene.dotSize * swap[0].row + this.scene.dotSize / 2,
-      duration: 500,
-    })
-    var t = this.scene.tweens.add({
-      targets: this.dots[swap[0].col][swap[0].row].image,
-      x: this.scene.xOffset + this.scene.dotSize * swap[1].col + this.scene.dotSize / 2,
-      y: this.scene.yOffset + this.scene.dotSize * swap[1].row + this.scene.dotSize / 2,
-      duration: 500
-    }) */
+    /*  var r = this.scene.tweens.add({
+       targets: this.dots[swap[1].col][swap[1].row].image,
+       x: this.scene.xOffset + this.scene.dotSize * swap[0].col + this.scene.dotSize / 2,
+       y: this.scene.yOffset + this.scene.dotSize * swap[0].row + this.scene.dotSize / 2,
+       duration: 500,
+     })
+     var t = this.scene.tweens.add({
+       targets: this.dots[swap[0].col][swap[0].row].image,
+       x: this.scene.xOffset + this.scene.dotSize * swap[1].col + this.scene.dotSize / 2,
+       y: this.scene.yOffset + this.scene.dotSize * swap[1].row + this.scene.dotSize / 2,
+       duration: 500
+     }) */
 
   }
   sameDot = function (dotA, dotB) {

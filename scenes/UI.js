@@ -64,13 +64,19 @@ class UI extends Phaser.Scene {
     //////////////////////////////
     //bottom tally
     this.tallyContainer = this.add.container()
-    var dotSize = 125
-    this.xOffset = (game.config.width - (dotColors.length * dotSize)) / 2
-    var tallyBG = this.add.image(450, 775, 'blank').setTint(0x393939).setAlpha(.8)
-    tallyBG.displayWidth = 850
-    tallyBG.displayHeight = 500
 
+
+    var dotSize = 125
+    //this.xOffset = (game.config.width - (dotColors.length * dotSize)) / 2
+    this.xOffset = 50
+    var tallyBG = this.add.image(450, 750, 'blank').setTint(0x393939).setAlpha(.8)
+    tallyBG.displayWidth = 850
+    tallyBG.displayHeight = 600
     this.tallyContainer.add(tallyBG)
+
+    var totalsText = this.add.text(450, 525, 'TD: ' + gameSettings.totalDots + ' TS: ' + gameSettings.totalSquares, { fontFamily: 'PixelFont', fontSize: '90px', color: '#Fafafa', align: 'left' }).setOrigin(.5, 1)
+    this.tallyContainer.add(totalsText)
+
     this.tallyArray = []
     for (var i = 0; i < this.Main.board.tally.length; i++) {
       if (i < 6) {
@@ -89,8 +95,26 @@ class UI extends Phaser.Scene {
         var tTextY = 950
         var tIconY = 960
       }
+      if (i < 6) {
+        var testDot = this.add.image(tX, tIconY, 'dot2').setTint(colors[i])
+      } else if (i == 6) {
+        var testDot = this.add.image(tX, tIconY, 'square').setTint(0xBAB6B6)
+      } else if (i == 7) {
+        var testDot = this.add.image(tX, tIconY, 'arrow').setTint(0xF1C40F)
+      } else if (i == 8) {
+        var testDot = this.add.image(tX, tIconY, 'bomb', 3).setTint(0xBAB6B6)
+      } else if (i == 9) {
+        var testDot = this.add.image(tX, tIconY, 'ice', 3).setTint(0xBAB6B6)
+      } else if (i == 10) {
+        var testDot = this.add.image(tX, tIconY, 'dot2').setTint(0x000000)
+      } else if (i == 11) {
+        var testDot = this.add.image(tX, tIconY, 'rover', 3).setTint(0xBAB6B6)
+      } else if (i == 12) {
+        var testDot = this.add.image(tX, tIconY, 'wild').setTint(0xfafafa)
+      } else {
+        var testDot = this.add.image(tX, tIconY, 'dot2').setTint(0x333333)
+      }
 
-      var testDot = this.add.image(tX, tIconY, 'dot2').setTint(dotColors[i])
       testDot.displayWidth = this.Main.spriteSize * .50
       testDot.displayHeight = this.Main.spriteSize * .50
       this.tallyContainer.add(testDot)
@@ -418,7 +442,7 @@ class UI extends Phaser.Scene {
         } else {
           x = i;
         }
-        this.squareIcon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(.35).setAlpha(1).setTint(0xb8b8b8);
+        this.squareIcon = this.add.image(xOffsetT + x * xSpace, y, 'square').setScale(.35).setAlpha(1).setTint(0xb8b8b8);
         this.squareText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
         this.squareGoal = value;
         this.squareText.setText(value);
@@ -469,9 +493,26 @@ class UI extends Phaser.Scene {
         }
         this.wildIcon = this.add.image(xOffsetT + x * xSpace, y, 'wild').setScale(.35).setAlpha(1).setTint(0xb8b8b8);
         this.wildText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
-        this.wildrGoal = value;
+        this.wildGoal = value;
         this.wildText.setText(value);
         this.wildWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
+      if (key == 'slime') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.slimeIcon = this.add.image(xOffsetT + x * xSpace, y, 'dot2').setScale(.35).setAlpha(1).setTint(0xb8b8b8);
+        this.slimeText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.slimeGoal = this.Main.boardWidth * this.Main.boardHeight;
+        value = this.slimeGoal
+        this.slimeText.setText(value);
+        this.slimeWin = true;
         this.winCount++;
         i++;
         j++;
@@ -593,6 +634,15 @@ class UI extends Phaser.Scene {
         this.wildGoal = -100
         this.winComplete++;
         this.wildWin = false;
+      }
+    }
+    if (this.slimeWin) {
+      this.slimeText.setText(this.slimeGoal - this.Main.board.tally[13]);
+      if (this.Main.board.tally[13] >= this.slimeGoal) {
+        this.tweenCount(this.slimeText, this.slimeIcon);
+        this.slimeGoal = -100
+        this.winComplete++;
+        this.slimeWin = false;
       }
     }
     if (this.winCount == this.winComplete) {

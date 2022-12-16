@@ -30,7 +30,7 @@ class levelBuilder extends Phaser.Scene {
     this.dropOn = defaultGame.aD
     this.iceOn = defaultGame.aI
     this.wildOn = defaultGame.aW
-
+    this.slimeOn = defaultGame.aSl
 
 
 
@@ -43,14 +43,14 @@ class levelBuilder extends Phaser.Scene {
     var rowsText = this.add.bitmapText(700, 395, 'topaz', 'ROWS', 50).setOrigin(0, 1).setTint(0xffffff);
     this.rowsSelect()
 
-    var colorText = this.add.bitmapText(450, 1400, 'topaz', 'PLAY', 50).setOrigin(.5).setTint(0xffffff).setInteractive();
+    var colorText = this.add.bitmapText(450, 1400, 'topaz', 'PLAY', 80).setOrigin(.5).setTint(0xF0B060).setInteractive();
     colorText.on('pointerdown', this.clickHandler, this)
     var toggleC1 = 200
     var toggleC2 = 700
-    var toggleR1 = 575
-    var toggleR2 = 675
-    var toggleR3 = 775
-    var toggleR4 = 875
+    var toggleR1 = 600
+    var toggleR2 = 700
+    var toggleR3 = 800
+    var toggleR4 = 900
 
     //allow rovers
     var rover = this.add.bitmapText(toggleC1 - 25, toggleR3, 'topaz', 'ROVER', 50).setOrigin(1, .5).setTint(0xffffff);
@@ -77,8 +77,17 @@ class levelBuilder extends Phaser.Scene {
     this.wildSwitch = this.add.image(toggleC2 + 25, toggleR2, 'switch', (this.wildOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
     this.wildSwitch.on('pointerdown', this.wildToggle, this)
 
-    this.movesSelect()
+    //allow slime
+    var slime = this.add.bitmapText(toggleC2 - 25, toggleR3, 'topaz', 'SLIME', 50).setOrigin(1, .5).setTint(0xffffff);
+    this.slimeSwitch = this.add.image(toggleC2 + 25, toggleR3, 'switch', (this.slimeOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
+    this.slimeSwitch.on('pointerdown', this.slimeToggle, this)
 
+    this.movesSelect()
+    var backIcon = this.add.image(game.config.width / 2, 1550, 'menu_icons', 5).setInteractive()
+    backIcon.on('pointerdown', function () {
+      this.scene.stop()
+      this.scene.start('startGame')
+    }, this)
   }
   clickHandler() {
     localStorage.setItem('PDlb1', JSON.stringify(defaultGame));
@@ -155,6 +164,18 @@ class levelBuilder extends Phaser.Scene {
       this.wildSwitch.setFrame(1)
     }
   }
+  slimeToggle() {
+    if (this.slimeOn) {
+      this.slimeOn = false
+      defaultGame.aSl = this.slimeOn
+
+      this.slimeSwitch.setFrame(0)
+    } else {
+      this.slimeOn = true
+      defaultGame.aSl = this.slimeOn
+      this.slimeSwitch.setFrame(1)
+    }
+  }
   itemSelect() {
     var less = this.add.bitmapText(90, 455, 'topaz', '<  ', 80).setOrigin(.5).setTint(0xcccccc).setInteractive();
     var more = this.add.bitmapText(160, 455, 'topaz', '  >', 80).setOrigin(.5).setTint(0xcccccc).setInteractive();
@@ -216,10 +237,11 @@ class levelBuilder extends Phaser.Scene {
     }, this)
   }
   movesSelect() {
+    var moveText = this.add.bitmapText(450, 1140, 'topaz', 'MOVES', 50).setOrigin(.5, 1).setTint(0xffffff);
     var movesIndex = this.movesArray.indexOf(defaultGame.mL)
-    var less = this.add.bitmapText(game.config.width / 2 - 180, 1200, 'topaz', '< ', 60).setOrigin(.5).setTint(0xffffff).setInteractive();
-    var more = this.add.bitmapText(game.config.width / 2 - 70, 1200, 'topaz', ' >', 60).setOrigin(.5).setTint(0xffffff).setInteractive();
-    var movesSelectText = this.add.bitmapText(game.config.width / 2 - 125, 1200, 'topaz', defaultGame.mL, 60).setOrigin(.5).setTint(0xffffff);
+    var less = this.add.bitmapText(game.config.width / 2 - 50, 1200, 'topaz', '<  ', 80).setOrigin(.5).setTint(0xffffff).setInteractive();
+    var more = this.add.bitmapText(game.config.width / 2 + 50, 1200, 'topaz', '  >', 80).setOrigin(.5).setTint(0xffffff).setInteractive();
+    var movesSelectText = this.add.bitmapText(game.config.width / 2, 1200, 'topaz', defaultGame.mL, 80).setOrigin(.5).setTint(0xffffff);
 
     less.on('pointerdown', function () {
       movesIndex--
