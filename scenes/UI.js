@@ -111,6 +111,10 @@ class UI extends Phaser.Scene {
         var testDot = this.add.image(tX, tIconY, 'rover', 3).setTint(0xBAB6B6)
       } else if (i == 12) {
         var testDot = this.add.image(tX, tIconY, 'wild').setTint(0xfafafa)
+      } else if (i == 13) {
+        var testDot = this.add.image(tX, tIconY, 'dot2').setTint(0x685570)
+      } else if (i == 14) {
+        var testDot = this.add.image(tX, tIconY, 'gem').setTint(0xBAB6B6)
       } else {
         var testDot = this.add.image(tX, tIconY, 'dot2').setTint(0x333333)
       }
@@ -517,6 +521,22 @@ class UI extends Phaser.Scene {
         i++;
         j++;
       }
+      if (key == 'gem') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.gemIcon = this.add.image(xOffsetT + x * xSpace, y, 'gem').setScale(.35).setAlpha(1).setTint(0xb8b8b8);
+        this.gemText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.gemGoal = value;
+        this.gemText.setText(value);
+        this.gemWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
       //console.log(key + ' ' + value); // "a 5", "b 7", "c 9"
 
     });
@@ -643,6 +663,15 @@ class UI extends Phaser.Scene {
         this.slimeGoal = -100
         this.winComplete++;
         this.slimeWin = false;
+      }
+    }
+    if (this.gemWin) {
+      this.gemText.setText(this.gemGoal - this.Main.board.tally[14]);
+      if (this.Main.board.tally[14] >= this.gemGoal) {
+        this.tweenCount(this.gemText, this.gemIcon);
+        this.gemGoal = -100
+        this.winComplete++;
+        this.gemWin = false;
       }
     }
     if (this.winCount == this.winComplete) {

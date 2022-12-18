@@ -9,6 +9,7 @@ class Board {
     this.idCount = 0
     this.selectedColor = null
     this.selectedDots = []
+    this.gems = []
     this.squareCompleted = false
     this.numColors = numColors
     this.redrawTheseColumns = {};
@@ -160,6 +161,15 @@ class Board {
       }
     });
   }
+  deleteArrayOfDots(array) {
+    array.forEach(function (dot) {
+
+      dot.explode();
+    });
+    array.forEach(function (dot) {
+      dot.destroy();
+    });
+  }
   deleteAllDotsofColor() {
     this.deleteWildSquare()
     var color = this.selectedColor;
@@ -280,6 +290,26 @@ class Board {
 
     return container;
   }
+  findColumn(col) {
+    var container = [];
+    this.dots.forEach(function (column) {
+      column.forEach(function (dot) {
+        if (dot.coordinates[0] == col) container.push(dot);
+      });
+    });
+    return container;
+
+  }
+  findRow(row) {
+    var container = [];
+    this.dots.forEach(function (column) {
+      column.forEach(function (dot) {
+        if (dot.coordinates[1] == row) container.push(dot);
+      });
+    });
+    return container;
+
+  }
   reassignColors() {
     var container = this.findBoardColors()
     console.log(container)
@@ -300,7 +330,7 @@ class Board {
   }
   validDrag(dot) {
 
-    if (this.rightColor(dot) && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.canSelectDot(dot) && this.notBlocked(dot)) {
+    if (this.canSelectDot(dot) && this.rightColor(dot) && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.notBlocked(dot)) {
       return true
     } /* else if (dot.color == -1 && this.isNeighbor(dot) && this.notAlreadySelected(dot) && this.canSelectDot(dot) && this.notBlocked(dot)) {
       //this.board.selectedColor = dot.color;
@@ -316,7 +346,7 @@ class Board {
   connects(dot1, dot2) {
     if (dot1 == undefined || dot2 == undefined) { return }
     //return this.b.board[dot1.row][dot1.col].value === this.b.board[dot2.row][dot2.col].value && this.b.areNext(dot1, dot2)
-
+    if (dot1.type == 14 || dot2.type == 14) { return false }
     if (this.b.board[dot1.row][dot1.col].value === this.b.board[dot2.row][dot2.col].value && this.b.areNext(dot1, dot2)) {
       return true
     } else if (this.valueAt(dot1.row, dot1.col) == gameOptions.wildValue && this.b.areNext(dot1, dot2)) {
@@ -334,6 +364,7 @@ class Board {
 
 
   rightColor(dot) {
+    if (dot.type == 14) { return false }
     if (this.selectedColor == -1) {
       if (dot.color > -1) {
         this.selectedColor = dot.color

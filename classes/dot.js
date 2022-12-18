@@ -97,6 +97,10 @@ class Dot {
         this.board.extraDots.push(this.coordinates)
         this.board.tally[8]++
       }
+      if (this.type == 14) {
+        this.board.scene.explode(this.coordinates[0], this.coordinates[1])
+        this.board.gems.push(this.coordinates)
+      }
     } else {
       this.image.setAlpha(1)
     }

@@ -31,7 +31,7 @@ class levelBuilder extends Phaser.Scene {
     this.iceOn = defaultGame.aI
     this.wildOn = defaultGame.aW
     this.slimeOn = defaultGame.aSl
-
+    this.gemOn = defaultGame.aG
 
 
     var colorText = this.add.bitmapText(75, 395, 'topaz', 'COLORS', 50).setOrigin(0, 1).setTint(0xffffff);
@@ -81,6 +81,11 @@ class levelBuilder extends Phaser.Scene {
     var slime = this.add.bitmapText(toggleC2 - 25, toggleR3, 'topaz', 'SLIME', 50).setOrigin(1, .5).setTint(0xffffff);
     this.slimeSwitch = this.add.image(toggleC2 + 25, toggleR3, 'switch', (this.slimeOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
     this.slimeSwitch.on('pointerdown', this.slimeToggle, this)
+
+    //allow gem
+    var gem = this.add.bitmapText(toggleC1 - 25, toggleR4, 'topaz', 'GEM', 50).setOrigin(1, .5).setTint(0xffffff);
+    this.gemSwitch = this.add.image(toggleC1 + 25, toggleR4, 'switch', (this.gemOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
+    this.gemSwitch.on('pointerdown', this.gemToggle, this)
 
     this.movesSelect()
     var backIcon = this.add.image(game.config.width / 2, 1550, 'menu_icons', 5).setInteractive()
@@ -174,6 +179,18 @@ class levelBuilder extends Phaser.Scene {
       this.slimeOn = true
       defaultGame.aSl = this.slimeOn
       this.slimeSwitch.setFrame(1)
+    }
+  }
+  gemToggle() {
+    if (this.gemOn) {
+      this.gemOn = false
+      defaultGame.aG = this.gemOn
+
+      this.gemSwitch.setFrame(0)
+    } else {
+      this.gemOn = true
+      defaultGame.aG = this.gemOn
+      this.gemSwitch.setFrame(1)
     }
   }
   itemSelect() {

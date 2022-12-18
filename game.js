@@ -56,7 +56,8 @@ class playGame extends Phaser.Scene {
     this.allowWild = levelConfig.aW
     this.wildStartCount = levelConfig.wS
     this.allowSlime = levelConfig.aSl
-
+    this.allowGem = levelConfig.aG
+    this.gemStartCount = levelConfig.gS
 
     let dotAllColors = colorGroups[gameSettings.colorSet]
     if ((gameMode == 0 || gameMode == 1) && lbFlag == false) {
@@ -143,6 +144,7 @@ class playGame extends Phaser.Scene {
     let row = Math.floor((pointer.y - this.yOffset) / this.dotSize);
     let col = Math.floor((pointer.x - this.xOffset) / this.dotSize);
     if (!this.board.validCoordinates(col, row)) { return }
+    if (this.board.dots[col][row].type == 14) { return }
     console.log(this.board.dots[col][row])
     if (gameMode == 1) {
       if (!this.timeStarted) {
@@ -170,7 +172,9 @@ class playGame extends Phaser.Scene {
     }
 
     console.log('row ' + row + ' col ' + col)
+    //if (!dot.selectable) { return }
     this.board.dots[col][row].activate();
+
     if (this.board.dots[col][row].color == -1) {
       this.board.selectedColor = -1
     } else {
@@ -186,6 +190,7 @@ class playGame extends Phaser.Scene {
       if (!this.board.validCoordinates(col, row)) { return }
       var coor = [col, row]
       var dot = this.board.findDot(coor)
+      // if (!dot.selectable) { return }
       if (this.board.validDrag(dot) && !this.board.squareCompleted) {
         //new dot
         var line = this.add.line(null, null, this.board.lastSelectedDot().image.x, this.board.lastSelectedDot().image.y, dot.image.x, dot.image.y, dotColors[this.board.selectedColor]).setOrigin(0);
@@ -219,7 +224,7 @@ class playGame extends Phaser.Scene {
     if (!this.board.dragging) { return }
 
     if (this.board.selectedDots.length > 1) {
-
+      this.board.gems = []
       if (this.board.squareCompleted) {
         this.board.tally[6]++
         this.squareBox.clear()
@@ -269,6 +274,19 @@ class playGame extends Phaser.Scene {
           this.board.destroyDots()
         }
       }
+      if (this.allowGem) {
+        console.log(this.board.gems)
+        if (this.board.gems.length > 0) {
+          for (let i = 0; i < this.board.gems.length; i++) {
+            const gem = this.board.gems[i];
+            var col = this.board.findColumn(gem[0])
+            this.board.selectedDots = col
+            //this.explodeAll(neighbors)
+            this.board.destroyDots()
+          }
+
+        }
+      }
       //////////
       if (this.allowRover) {
         var rovers = this.board.findRovers()
@@ -292,6 +310,20 @@ class playGame extends Phaser.Scene {
 
   }
   drawBoard() {
+    if (this.allowGem) {
+      var placed = 0
+      while (placed < this.gemStartCount) {
+        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
+        var randY = Phaser.Math.Between(0, this.boardHeight - 1)
+        if (this.board.dots[randX][randY].type < 6) {
+          this.board.dots[randX][randY].selectable = false
+
+          this.board.dots[randX][randY].type = 14
+          this.board.dots[randX][randY].image.setTexture('gem')
+          placed++
+        }
+      }
+    }
     if (this.allowSlime) {
       this.board.underlay[0][0].selectable = false
 

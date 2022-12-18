@@ -501,6 +501,28 @@ class endGameChal extends Phaser.Scene {
 				i++;
 				j++;
 			}
+			if (key == 'gem') {
+				if (i > 2) {
+					y = y2;
+					x = i - 3;
+				} else {
+					x = i;
+				}
+				this.gemIcon = this.add.image(xOffsetT + x * xSpace, y, 'gem').setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
+				var newVal = value - this.Main.board.tally[14]
+				if (newVal <= 0) {
+					var check = this.add.image(xOffsetI + x * xSpace, y, 'check').setOrigin(0, .5).setScale(.4).setAlpha(1).setTint(0x000000);
+					this.end.add(check)
+				} else {
+					this.gemText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+					this.gemText.setText(newVal);
+					this.end.add(this.gemText)
+				}
+				this.end.add(this.gemIcon)
+
+				i++;
+				j++;
+			}
 			//console.log(key + ' ' + value); // "a 5", "b 7", "c 9"
 
 		});

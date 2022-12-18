@@ -41,6 +41,7 @@ class startGame extends Phaser.Scene {
     removeData.on('pointerdown', function () {
       removeData.setText('Data Reset')
       localStorage.removeItem('SD4save');
+      localStorage.removeItem('PDlb1');
       localStorage.setItem('SD4save', JSON.stringify(defaultValues));
       gameSettings = defaultValues;
     }, this);
