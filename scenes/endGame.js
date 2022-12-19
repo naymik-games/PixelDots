@@ -83,15 +83,27 @@ class endGame extends Phaser.Scene {
 		var totalSquareText = this.add.text(675, 800, gameSettings.totalSquares, { fontFamily: 'PixelFont', fontSize: '100px', color: '#000000', align: 'left' }).setOrigin(.5)
 		this.end.add(totalSquareText)
 
-		var playAgain = this.add.image(450, 1400, 'playagain').setInteractive()
+		var playAgain = this.add.image(450, 1250, 'game_icons', 0).setInteractive()
 		playAgain.on('pointerdown', this.play, this)
 		this.end.add(playAgain)
+		var goHome = this.add.image(450, 1400, 'game_icons', 1).setInteractive()
+		goHome.on('pointerdown', this.home, this)
+		this.end.add(goHome)
+
+
+
+
 		if (gameMode == 3) {
 			this.setupGoals()
 			console.log(this.outcome)
 		}
 		localStorage.setItem('SD4save', JSON.stringify(gameSettings));
 	}
+
+
+
+
+
 
 	showPreview() {
 
@@ -108,7 +120,20 @@ class endGame extends Phaser.Scene {
 		this.scene.stop('playGame');
 		this.scene.stop('endGame');
 		this.scene.stop('UI');
+		this.scene.start('playGame')
+		this.scene.start('UI')
+		/* if (gameMode == 'challenge') {
+			this.scene.start('selectGame')
+		} else {
+			this.scene.start('startGame')
+		} */
+	}
+	home() {
+		this.scene.stop('playGame');
+		this.scene.stop('endGame');
+		this.scene.stop('UI');
 		this.scene.start('startGame')
+
 		/* if (gameMode == 'challenge') {
 			this.scene.start('selectGame')
 		} else {
@@ -147,11 +172,11 @@ class endGame extends Phaser.Scene {
 		} else {
 			var message = 'Complete'
 			var score = this.totalBlocksRemoved;
-			if (this.totalBlocksRemoved > gameSettings.mostDotsMoves) {
-				gameSettings.mostDotsMoves = this.totalBlocksRemoved;
+			if (this.totalBlocksRemoved > gameSettings.mostDots[gameMode]) {
+				gameSettings.mostDots[gameMode] = this.totalBlocksRemoved;
 				var high = this.totalBlocksRemoved;
 			} else {
-				var high = gameSettings.mostDotsMoves;
+				var high = gameSettings.mostDots[gameMode];
 			}
 		}
 		let messageText = this.add.bitmapText(posX, gameOptions.offsetY + 50, 'atari', message, 60).setOrigin(.5).setTint(0xffffff);

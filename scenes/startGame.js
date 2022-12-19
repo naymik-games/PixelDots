@@ -22,18 +22,25 @@ class startGame extends Phaser.Scene {
     /* var startTime = this.add.bitmapText(game.config.width / 2, 275, 'topaz', 'Play Time', 50).setOrigin(.5).setTint(0xfafafa);
     startTime.setInteractive();
     startTime.on('pointerdown', this.clickHandler, this); */
+    var bestLabel = this.add.text(750, 250, 'BEST', { fontFamily: 'PixelFont', fontSize: '80px', color: '#4E8689', align: 'left' }).setOrigin(.5)
 
 
     var movesButton = this.add.image(450, 400, 'mode_buttons', 0).setInteractive()
+    var movesBest = this.add.text(750, 385, gameSettings.mostDots[0], { fontFamily: 'PixelFont', fontSize: '100px', color: '#4E8689', align: 'left' }).setOrigin(.5)
     movesButton.on('pointerdown', this.movesHandler, this);
     var timeButton = this.add.image(450, 550, 'mode_buttons', 1).setInteractive()
+    var timeBest = this.add.text(750, 535, gameSettings.mostDots[1], { fontFamily: 'PixelFont', fontSize: '100px', color: '#4E8689', align: 'left' }).setOrigin(.5)
     timeButton.on('pointerdown', this.timeHandler, this);
     var zenButton = this.add.image(450, 700, 'mode_buttons', 2).setInteractive()
+    var zenBest = this.add.text(750, 685, gameSettings.mostDots[2], { fontFamily: 'PixelFont', fontSize: '100px', color: '#4E8689', align: 'left' }).setOrigin(.5)
     zenButton.on('pointerdown', this.zenHandler, this);
     var puzzleButton = this.add.image(450, 850, 'mode_buttons', 3).setInteractive()
+    var puzzleBest = this.add.text(750, 835, 'L ' + (gameSettings.unlocked + 1), { fontFamily: 'PixelFont', fontSize: '100px', color: '#4E8689', align: 'left' }).setOrigin(.5)
+
     puzzleButton.on('pointerdown', this.puzzleHandler, this);
-    var puzzleButton = this.add.image(450, 1000, 'mode_buttons', 4).setInteractive()
-    puzzleButton.on('pointerdown', this.customHandler, this);
+    var customButton = this.add.image(450, 1000, 'mode_buttons', 4).setInteractive()
+    var customBest = this.add.text(750, 985, gameSettings.mostDots[4], { fontFamily: 'PixelFont', fontSize: '100px', color: '#4E8689', align: 'left' }).setOrigin(.5)
+    customButton.on('pointerdown', this.customHandler, this);
 
 
 
@@ -131,7 +138,7 @@ class startGame extends Phaser.Scene {
   }
   customHandler() {
     levelConfig = levels[gameSettings.unlocked]
-    gameMode = 4
+    gameMode = 5
     gameSettings.currentLevel = gameSettings.unlocked
     this.scene.start('levelBuilder');
     //this.scene.launch('UI');

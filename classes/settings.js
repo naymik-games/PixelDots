@@ -11,7 +11,12 @@ let gameOptions = {
 
 }
 let gameMode
-let gameModeNames = ['MOVES', 'TIME', 'ZEN', 'LEVEL']
+//0 moves
+//1 time
+//2 zen
+//3 level
+//4 custom
+let gameModeNames = ['MOVES', 'TIME', 'ZEN', 'LEVEL', 'CUSTOM']
 let levelConfig
 loadFont("PixelFont", "assets/fonts/mago1.ttf");
 loadFont("PixelFontWide", "assets/fonts/mago3.ttf");

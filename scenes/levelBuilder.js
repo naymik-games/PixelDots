@@ -98,7 +98,7 @@ class levelBuilder extends Phaser.Scene {
     localStorage.setItem('PDlb1', JSON.stringify(defaultGame));
     gameMode = 'moves'
     lbFlag = true
-    gameMode = 0
+    gameMode = 4
     levelConfig = defaultGame
     this.scene.stop()
     this.scene.start('playGame');

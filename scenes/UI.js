@@ -20,7 +20,7 @@ class UI extends Phaser.Scene {
     }
 
     this.scoreText = this.add.text(125, 50, '0', { fontFamily: 'PixelFont', fontSize: '120px', color: '#F0B060', align: 'left' }).setOrigin(.5)
-    if (gameMode == 0 || gameMode == 2 || gameMode == 3) {
+    if (gameMode == 0 || gameMode == 2 || gameMode == 3 || gameMode == 4) {
       this.goalText = this.add.text(125, 125, '/' + this.Main.moveLimit, { fontFamily: 'PixelFont', fontSize: '70px', color: '#F0B060', align: 'left' }).setOrigin(.5)
     }
 

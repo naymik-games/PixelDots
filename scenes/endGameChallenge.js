@@ -91,9 +91,19 @@ class endGameChal extends Phaser.Scene {
 
 
 
-		var playAgain = this.add.image(450, 1400, 'playagain').setInteractive()
+		var playAgain = this.add.image(350, 1250, 'game_icons', 0).setInteractive()
 		playAgain.on('pointerdown', this.play, this)
 		this.end.add(playAgain)
+
+
+		var levelSelect = this.add.image(550, 1250, 'game_icons', 3).setInteractive()
+		levelSelect.on('pointerdown', this.levelSelect, this)
+		this.end.add(levelSelect)
+
+		var goHome = this.add.image(450, 1400, 'game_icons', 1).setInteractive()
+		goHome.on('pointerdown', this.home, this)
+		this.end.add(goHome)
+
 
 		this.setupGoals()
 		console.log(this.outcome)
@@ -113,15 +123,34 @@ class endGameChal extends Phaser.Scene {
 	}
 
 	play() {
+		/* this.scene.stop('playGame');
+		this.scene.stop('endGame');
+		this.scene.stop('UI');
+		this.scene.start('startGame') */
 		this.scene.stop('playGame');
 		this.scene.stop('endGame');
 		this.scene.stop('UI');
-		this.scene.start('startGame')
+		this.scene.start('playGame')
+		this.scene.start('UI')
 		/* if (gameMode == 'challenge') {
 			this.scene.start('selectGame')
 		} else {
 			this.scene.start('startGame')
 		} */
+	}
+	home() {
+		this.scene.stop('playGame');
+		this.scene.stop('endGame');
+		this.scene.stop('UI');
+		this.scene.start('startGame')
+
+	}
+	levelSelect() {
+		this.scene.stop('playGame');
+		this.scene.stop('endGame');
+		this.scene.stop('UI');
+		this.scene.start('selectGame')
+
 	}
 	cancel() {
 		this.scene.stop();

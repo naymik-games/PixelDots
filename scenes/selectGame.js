@@ -197,9 +197,23 @@ class selectGame extends Phaser.Scene {
     if (this.preview) {
       this.preview.destroy()
     }
-    var back = this.add.image(450, 260, 'blank').setTint(0xfafafa)
-    back.displayWidth = 700
-    back.displayHeight = 200
+    /*  var back = this.add.image(450, 260, 'blank').setTint(0xfafafa)
+     back.displayWidth = 700
+     back.displayHeight = 200 */
+
+    this.squareBox = this.add.graphics();
+
+
+    this.squareBox.lineStyle(5, 0xfafafa, 1);
+    this.squareBox.fillStyle(0xffffff, 1);
+    this.squareBox.strokeRoundedRect(100, 160, 700, 200, 15);
+    this.squareBox.fillRoundedRect(100, 160, 700, 200, 15);
+
+
+
+
+
+
     var i = 0;
     var j = 0;
     var x = 0;
