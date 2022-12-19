@@ -20,7 +20,11 @@
 9 ice 
 10 block 
 11 rover 
-12 wild */
+12 wild 
+13 slime
+14 geme
+15 fire
+*/
 class Dot {
   constructor(id, x, y, color, board, dotSize) {
     this.coordinates = [x, y];
@@ -81,6 +85,9 @@ class Dot {
     }
     if (levelConfig.aI) {
       this.board.checkIce(this.coordinates)
+    }
+    if (this.board.scene.allowFire) {
+      this.extinguishNeighborFire()
     }
   }
   destroy() {
@@ -157,6 +164,25 @@ class Dot {
     this.board.createNewDot(x);
   }
   ///////
+  extinguishNeighborFire() {
+    var n = this.neighbors()
+    var isFire = false
+    for (let i = 0; i < n.length; i++) {
+      const element = n[i];
+      if (this.board.dots[element.coordinates[0]][element.coordinates[1]].type == 15) {
+        this.board.scene.damageEmit(this.board.dots[element.coordinates[0]][element.coordinates[1]].image.x, this.board.dots[element.coordinates[0]][element.coordinates[1]].image.y)
+        var num = Phaser.Math.Between(0, dotColors.length - 1);
+        this.board.dots[element.coordinates[0]][element.coordinates[1]].type = num
+        this.board.dots[element.coordinates[0]][element.coordinates[1]].color = num
+        this.board.dots[element.coordinates[0]][element.coordinates[1]].image.setTexture('dot2')
+        this.board.dots[element.coordinates[0]][element.coordinates[1]].image.setTint(dotColors[num])
+        this.board.dots[element.coordinates[0]][element.coordinates[1]].selectable = true
+        this.board.growFire = false
+        this.board.tally[15]++
+
+      }
+    }
+  }
   isNeighborSlime() {
     var n = this.neighbors()
     var isSlime = false

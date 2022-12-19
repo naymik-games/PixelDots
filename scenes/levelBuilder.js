@@ -32,6 +32,7 @@ class levelBuilder extends Phaser.Scene {
     this.wildOn = defaultGame.aW
     this.slimeOn = defaultGame.aSl
     this.gemOn = defaultGame.aG
+    this.fireOn = defaultGame.aF
 
 
     var colorText = this.add.bitmapText(75, 395, 'topaz', 'COLORS', 50).setOrigin(0, 1).setTint(0xffffff);
@@ -86,6 +87,11 @@ class levelBuilder extends Phaser.Scene {
     var gem = this.add.bitmapText(toggleC1 - 25, toggleR4, 'topaz', 'GEM', 50).setOrigin(1, .5).setTint(0xffffff);
     this.gemSwitch = this.add.image(toggleC1 + 25, toggleR4, 'switch', (this.gemOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
     this.gemSwitch.on('pointerdown', this.gemToggle, this)
+
+    //allow fire
+    var fire = this.add.bitmapText(toggleC2 - 25, toggleR4, 'topaz', 'FIRE', 50).setOrigin(1, .5).setTint(0xffffff);
+    this.fireSwitch = this.add.image(toggleC2 + 25, toggleR4, 'switch', (this.fireOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
+    this.fireSwitch.on('pointerdown', this.fireToggle, this)
 
     this.movesSelect()
     var backIcon = this.add.image(game.config.width / 2, 1550, 'menu_icons', 5).setInteractive()
@@ -191,6 +197,18 @@ class levelBuilder extends Phaser.Scene {
       this.gemOn = true
       defaultGame.aG = this.gemOn
       this.gemSwitch.setFrame(1)
+    }
+  }
+  fireToggle() {
+    if (this.fireOn) {
+      this.fireOn = false
+      defaultGame.aF = this.fireOn
+
+      this.fireSwitch.setFrame(0)
+    } else {
+      this.fireOn = true
+      defaultGame.aF = this.fireOn
+      this.fireSwitch.setFrame(1)
     }
   }
   itemSelect() {

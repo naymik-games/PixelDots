@@ -13,7 +13,8 @@ class Board {
     this.squareCompleted = false
     this.numColors = numColors
     this.redrawTheseColumns = {};
-    this.tally = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    this.growFire = true;
+    this.tally = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     //this.specialTally = [0, 0, 0, 0]
     this.moves = 0
     //this.squareTally = 0
@@ -223,7 +224,25 @@ class Board {
     return container;
 
   }
+  findFire() {
+    var container = [];
+    this.dots.forEach(function (column) {
+      column.forEach(function (dot) {
+        if (dot.type == 15) {
+          var n = dot.neighbors()
+          for (var i = 0; i < n.length; i++) {
+            if (n[i].type < 6) {
+              container.push(n[i]);
+            }
+          }
 
+        }
+
+      });
+    });
+    return container;
+
+  }
 
   findDrops() {
     var drops = []

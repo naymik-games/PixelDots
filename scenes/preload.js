@@ -137,6 +137,7 @@ class preloadGame extends Phaser.Scene {
     this.load.image('star', 'assets/sprites/star.png');
     this.load.image('square', 'assets/sprites/squareicon.png');
     this.load.image('gem', 'assets/sprites/gem.png');
+    this.load.image('fire', 'assets/sprites/fire.png');
   }
   create() {
     this.scene.start("startGame");

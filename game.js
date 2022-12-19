@@ -58,6 +58,8 @@ class playGame extends Phaser.Scene {
     this.allowSlime = levelConfig.aSl
     this.allowGem = levelConfig.aG
     this.gemStartCount = levelConfig.gS
+    this.allowFire = levelConfig.aF
+    this.fireStartCount = levelConfig.fS
 
     let dotAllColors = colorGroups[gameSettings.colorSet]
     if ((gameMode == 0 || gameMode == 1) && lbFlag == false) {
@@ -137,7 +139,7 @@ class playGame extends Phaser.Scene {
 
   }
   dotSelect(pointer) {
-
+    this.board.growFire = true
     this.lineArray = []
     this.rectArray = []
     this.board.extraDots = []
@@ -288,6 +290,30 @@ class playGame extends Phaser.Scene {
         }
       }
       //////////
+      if (this.allowFire && this.board.growFire) {
+        var fires = this.board.findFire()
+
+        if (fires.length > 0) {
+          console.log(fires)
+          //for (var f = 0; f < fires.length; f++) {
+          var n = Phaser.Math.RND.pick(fires)
+          n.type = 15
+          n.color = 7
+          n.image.setTexture('fire')
+          n.image.setTint(0xff0000)
+          n.selectable = false
+          var tween = this.tweens.add({
+            targets: n,
+            alpha: 0,
+            duration: 200,
+            yoyo: true,
+          })
+          //}
+
+
+        }
+
+      }
       if (this.allowRover) {
         var rovers = this.board.findRovers()
         console.log(rovers)
@@ -310,6 +336,20 @@ class playGame extends Phaser.Scene {
 
   }
   drawBoard() {
+    if (this.allowFire) {
+      var placed = 0
+      while (placed < this.fireStartCount) {
+        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
+        var randY = Phaser.Math.Between(0, this.boardHeight - 1)
+        if (this.board.dots[randX][randY].type < 6) {
+          this.board.dots[randX][randY].selectable = false
+          this.board.dots[randX][randY].color = 6
+          this.board.dots[randX][randY].type = 15
+          this.board.dots[randX][randY].image.setTexture('fire').setTint(0xff0000)
+          placed++
+        }
+      }
+    }
     if (this.allowGem) {
       var placed = 0
       while (placed < this.gemStartCount) {
@@ -484,6 +524,39 @@ class playGame extends Phaser.Scene {
       explosion.setActive(false);
     }, this);
   }
+  damageEmit(objX, objY) {
+    var particlesColor = this.add.particles("star");
+    //.setTint(0x7d1414);
+    var emitter = particlesColor.createEmitter({
+      // particle speed - particles do not move
+      // speed: 1000,
+      //frame: { frames: [0, 1, 2, 3], cycle: true },
+
+      speed: {
+        min: -500,
+        max: 500
+      },
+      // particle scale: from 1 to zero
+      scale: {
+        start: .6,
+        end: 0
+      },
+      // particle alpha: from opaque to transparent
+      alpha: {
+        start: 1,
+        end: 1
+      },
+      // particle frequency: one particle every 100 milliseconds
+      frequency: 3,
+      // particle lifespan: 1 second
+      lifespan: 1000
+    });
+    //emitter.tint.onChange(0x7d1414);
+    emitter.explode(40, objX, objY);
+
+  }
+
+
   addScore() {
     this.events.emit('score');
   }

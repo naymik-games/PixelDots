@@ -115,6 +115,8 @@ class UI extends Phaser.Scene {
         var testDot = this.add.image(tX, tIconY, 'dot2').setTint(0x685570)
       } else if (i == 14) {
         var testDot = this.add.image(tX, tIconY, 'gem').setTint(0xBAB6B6)
+      } else if (i == 15) {
+        var testDot = this.add.image(tX, tIconY, 'fire').setTint(0xff0000)
       } else {
         var testDot = this.add.image(tX, tIconY, 'dot2').setTint(0x333333)
       }
