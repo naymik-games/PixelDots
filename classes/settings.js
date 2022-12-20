@@ -36,11 +36,12 @@ let colors = [0xDC5639, 0x823957, 0x436475, 0x5FA34C, 0xFBBD4E, 0xA6AB86]
 let dotAllColors = [0xDC5639, 0x823957, 0x436475, 0x5FA34C, 0xFBBD4E, 0xA6AB86];
 let dotColors = []
 let colorGroups = [[0xDC5639, 0x823957, 0x436475, 0x5FA34C, 0xFBBD4E, 0xA6AB86],
-[0xcb9831, 0x555220, 0x8f4a29, 0xcc4444, 0xe8c472, 0xf5fbef],
+[0x641e16, 0x1a5276, 0x6C3483, 0x0e6655, 0x9c640c, 0xAEB6BF],
 [0xe7d4be, 0x2b312e, 0x536b7b, 0x8d756b, 0xc3544b, 0xf4b675],
 [0xfff2cc, 0xf4b675, 0x99a4ad, 0x7c7474, 0x916455, 0x758E4F],
 [0x4da167, 0x61707d, 0x9d69a3, 0xf5fbef, 0xe85d75, 0xB87D4B],
-[0x758E4F, 0x86BBD8, 0xF6AE2D, 0x33658A, 0xF26419, 0xA1869E]]
+[0x758E4F, 0x86BBD8, 0xF6AE2D, 0x33658A, 0xF26419, 0xA1869E],
+[0xcb9831, 0x555220, 0x8f4a29, 0xcc4444, 0xe8c472, 0xf5fbef],]
 let gameSettings;
 var defaultValues = {
   mostDots: [0, 0, 0, 0, 0],
@@ -125,7 +126,7 @@ let levels = [
     id: 1, w: 6, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: true, gS: 2, aF: false, fS: 3, square: true, win: { color0: 10, color1: 10, gem: 2 }
   },
   {
-    id: 2, w: 6, h: 10, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: true, fS: 5, square: true, win: { color2: 10, color3: 10 }
+    id: 2, w: 6, h: 10, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: true, fS: 7, square: true, win: { color2: 10, color3: 10 }
   },
   {
     id: 3, w: 4, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: false, fS: 3, square: true, win: { color4: 10, color2: 10 }

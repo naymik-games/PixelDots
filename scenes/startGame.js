@@ -48,14 +48,7 @@ class startGame extends Phaser.Scene {
       this.scene.launch('options');
     }, this)
 
-    var removeData = this.add.bitmapText(game.config.width / 2, 1575, 'topaz', 'Reset Data', 50).setOrigin(.5).setTint(0xfafafa).setInteractive();
-    removeData.on('pointerdown', function () {
-      removeData.setText('Data Reset')
-      localStorage.removeItem('SD4save');
-      localStorage.removeItem('PDlb1');
-      localStorage.setItem('SD4save', JSON.stringify(defaultValues));
-      gameSettings = defaultValues;
-    }, this);
+
 
 
   }
