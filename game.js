@@ -13,7 +13,7 @@ window.onload = function () {
       height: 1640
     },
 
-    scene: [preloadGame, startGame, selectGame, playGame, UI, endGame, endGameChal, levelBuilder]
+    scene: [preloadGame, startGame, selectGame, playGame, UI, endGame, endGameChal, levelBuilder, options]
   }
   game = new Phaser.Game(gameConfig);
   window.focus();
@@ -317,7 +317,7 @@ class playGame extends Phaser.Scene {
       if (this.allowRover) {
         var rovers = this.board.findRovers()
         console.log(rovers)
-        if (rovers) {
+        if (rovers.length > 0) {
           var n = this.board.randomNeighbor(rovers[0])
           this.board.moveRover(rovers[0], n)
 

@@ -96,7 +96,7 @@ class endGameChal extends Phaser.Scene {
 		this.end.add(playAgain)
 
 
-		var levelSelect = this.add.image(550, 1250, 'game_icons', 3).setInteractive()
+		var levelSelect = this.add.image(550, 1250, 'game_icons', 2).setInteractive()
 		levelSelect.on('pointerdown', this.levelSelect, this)
 		this.end.add(levelSelect)
 

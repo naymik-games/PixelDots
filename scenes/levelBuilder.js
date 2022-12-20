@@ -196,6 +196,7 @@ class levelBuilder extends Phaser.Scene {
     } else {
       this.gemOn = true
       defaultGame.aG = this.gemOn
+      defaultGame.gS = Phaser.Math.Between(2, 5)
       this.gemSwitch.setFrame(1)
     }
   }
@@ -208,6 +209,7 @@ class levelBuilder extends Phaser.Scene {
     } else {
       this.fireOn = true
       defaultGame.aF = this.fireOn
+      defaultGame.fS = Phaser.Math.Between(5, 8)
       this.fireSwitch.setFrame(1)
     }
   }

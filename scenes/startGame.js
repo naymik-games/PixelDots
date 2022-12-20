@@ -42,7 +42,11 @@ class startGame extends Phaser.Scene {
     var customBest = this.add.text(750, 985, gameSettings.mostDots[4], { fontFamily: 'PixelFont', fontSize: '100px', color: '#4E8689', align: 'left' }).setOrigin(.5)
     customButton.on('pointerdown', this.customHandler, this);
 
-
+    var settingsButton = this.add.image(800, 1550, 'game_icons', 4).setInteractive()
+    settingsButton.on('pointerdown', function () {
+      this.scene.pause('startGame')
+      this.scene.launch('options');
+    }, this)
 
     var removeData = this.add.bitmapText(game.config.width / 2, 1575, 'topaz', 'Reset Data', 50).setOrigin(.5).setTint(0xfafafa).setInteractive();
     removeData.on('pointerdown', function () {
