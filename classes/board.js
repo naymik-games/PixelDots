@@ -80,6 +80,18 @@ class Board {
     dot.image.setVisible(true)
     dot.image.setActive(true)
     dot.image.setAlpha(1)
+    //var rand = Phaser.Math.Between(1, 100)
+    if (this.scene.allowDrop && Phaser.Math.Between(1, 100) < 11 && this.findCount(7) < this.scene.dropStartCount) {
+      this.setDrop(x, 0)
+    } else if (this.scene.allowBomb && Phaser.Math.Between(1, 100) < 11 && this.findCount(8) < this.scene.bombStartCount) {
+      this.setBomb(x, 0)
+    } else if (this.scene.allowWild && Phaser.Math.Between(1, 100) < 9 && this.findCount(12) < this.scene.wildStartCount) {
+      this.setWild(x, 0)
+    } else if (this.scene.allowGem && Phaser.Math.Between(1, 100) < 8 && this.findCount(14) < this.scene.gemStartCount) {
+      this.setGem(x, 0)
+    } else if (this.scene.allowRover && Phaser.Math.Between(1, 100) < 9 && this.findCount(11) < this.scene.roverStartCount) {
+      this.setRover(x, 0)
+    }
     //   dot.image.displayWidth = this.scene.spriteSize
     //  dot.image.displayHeight = this.scene.spriteSize
     // dot.image.setPosition(posX, posY)
@@ -238,6 +250,16 @@ class Board {
 
         }
 
+      });
+    });
+    return container;
+
+  }
+  findCount(type) {
+    var container = 0;
+    this.dots.forEach(function (column) {
+      column.forEach(function (dot) {
+        if (dot.type == type) container++;
       });
     });
     return container;
@@ -429,13 +451,19 @@ class Board {
     return !this.selectedDots.includes(dot);
 
   }
-  moveRover(rover, target) {
-    // console.log(rover.coordinates)
-    //  console.log(target.coordinates)
-    var roverX = rover.image.x
-    var roverY = rover.image.y
-    var targetX = target.image.x
-    var targetY = target.image.y
+  moveRover(rover) {
+    var num = Phaser.Math.Between(0, dotColors.length - 1)
+    rover.image.setTint(dotColors[num])
+    rover.color = num
+    /* var randomNum = randomExcludedNumber(dotColors.length, num);
+    var n = rover.neighbors()
+    for (var i = 0; i < n.length; i++) {
+      if (n[i].type < 6) {
+        //var num = Phaser.Math.Between(0, dotColors.length - 1)
+        n[i].image.setTint(dotColors[randomNum])
+        n[i].color = randomNum
+      }
+    } */
     //var swap = this.swapItems(rover.coordinates[0], rover.coordinates[1], target.coordinates[0], target.coordinates[1])
     // this.dots[rover.coordinates[0]][rover.coordinates[1]].image.setAlpha(.6)
     //this.dots[target.coordinates[0]][target.coordinates[1]].image.setAlpha(.6)
@@ -522,5 +550,88 @@ class Board {
       deltaRow: row2 - row,
       deltacol: col2 - col
     }]
+  }
+  addDrop(count) {
+    var placed = 0
+    while (placed < count) {
+      var randX = Phaser.Math.Between(0, this.width - 1)
+      var randY = Phaser.Math.Between(0, this.height - 2)
+      if (this.dots[randX][randY].type < 6) {
+        this.setDrop(randX, randY)
+        placed++
+      }
+    }
+  }
+  setDrop(randX, randY) {
+    this.dots[randX][randY].selectable = false
+    this.dots[randX][randY].color = 6
+    this.dots[randX][randY].type = 7
+    this.dots[randX][randY].image.setTexture('arrow').setTint(0xF1C40F)
+  }
+
+  addBomb(count) {
+    var placedB = 0
+    while (placedB < count) {
+      var randX = Phaser.Math.Between(0, this.width - 1)
+      var randY = Phaser.Math.Between(0, this.height - 1)
+      if (this.dots[randX][randY].type < 6) {
+        this.setBomb(randX, randY)
+        placedB++
+      }
+    }
+  }
+  setBomb(randX, randY) {
+    this.dots[randX][randY].strength = 3
+    this.dots[randX][randY].type = 8
+    this.dots[randX][randY].image.setTexture('bomb', 3)
+  }
+  addWild(count) {
+    var placedR = 0
+    while (placedR < count) {
+      var randX = Phaser.Math.Between(0, this.width - 1)
+      var randY = Phaser.Math.Between(0, this.height - 1)
+      if (this.dots[randX][randY].type < 6) {
+        this.setWild(randX, randY)
+
+        placedR++
+      }
+    }
+  }
+  setWild(randX, randY) {
+    this.dots[randX][randY].color = -1
+    this.dots[randX][randY].type = 12
+    this.dots[randX][randY].image.setTexture('wild').clearTint()
+  }
+  addGem(count) {
+    var placed = 0
+    while (placed < count) {
+      var randX = Phaser.Math.Between(0, this.width - 1)
+      var randY = Phaser.Math.Between(0, this.height - 1)
+      if (this.dots[randX][randY].type < 6) {
+        this.setGem(randX, randY)
+        placed++
+      }
+    }
+  }
+  setGem(randX, randY) {
+    this.dots[randX][randY].selectable = false
+    this.dots[randX][randY].type = 14
+    this.dots[randX][randY].image.setTexture('gem')
+  }
+  addRover(count) {
+    var placedR = 0
+    while (placedR < count) {
+      var randX = Phaser.Math.Between(0, this.width - 1)
+      var randY = Phaser.Math.Between(0, this.height - 1)
+      if (this.dots[randX][randY].type < 6) {
+        this.setRover(randX, randY)
+        placedR++
+      }
+    }
+  }
+  setRover(randX, randY) {
+    this.dots[randX][randY].strength = 3
+    this.dots[randX][randY].type = 11
+    this.dots[randX][randY].image.setTexture('rover', 3)
   }
 }

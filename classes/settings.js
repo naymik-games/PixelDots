@@ -58,7 +58,13 @@ function sample(array) {
   var random = array[Math.floor(Math.random() * array.length)];
   return random;
 }
-
+function randomExcludedNumber(numLength, excludeNumber) {
+  var randNumber = excludeNumber;
+  while (randNumber == excludeNumber) {
+    randNumber = Math.floor(Math.random() * numLength)
+  }
+  return randNumber;
+}
 function getLastElement(array) {
   return getLaterElements(array, 1);
 }

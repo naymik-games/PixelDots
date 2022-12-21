@@ -76,6 +76,18 @@ class Dot {
     } else if (this.type == 11) {
       this.strength--
       this.image.setFrame(this.strength)
+      var num = Phaser.Math.Between(0, dotColors.length - 1)
+      this.image.setTint(dotColors[num])
+      this.color = num
+      var randomNum = randomExcludedNumber(dotColors.length, num);
+      var n = this.neighbors()
+      for (var i = 0; i < n.length; i++) {
+        if (n[i].type < 6) {
+          //var num = Phaser.Math.Between(0, dotColors.length - 1)
+          n[i].image.setTint(dotColors[randomNum])
+          n[i].color = randomNum
+        }
+      }
     }
     if (levelConfig.aSl) {
       if (this.isNeighborSlime()) {
@@ -98,6 +110,10 @@ class Dot {
       this.adjustAboveDotCoordinates(this.dotSize);
       this.deleteThisFromArray();
       this.fillInSpaceLeft();
+      if (this.type == 11) {
+        this.board.scene.explode(this.coordinates[0], this.coordinates[1])
+        this.board.extraDots.push(this.coordinates)
+      }
       if (this.type == 8) {
         this.board.scene.explode(this.coordinates[0], this.coordinates[1])
         console.log('bomb exploded')
@@ -198,6 +214,10 @@ class Dot {
     var coords = this.neighborCoordinates();
     return this.board.findDots(coords);
   }
+  neighborsBox() {
+    var coords = this.neighborBoxCoordinates();
+    return this.board.findDots(coords);
+  }
 
   neighborCoordinates() {
     var x = this.coordinates[0];
@@ -207,6 +227,20 @@ class Dot {
       [x, y + 1],
       [x - 1, y],
       [x + 1, y]
+    ];
+  }
+  neighborBoxCoordinates() {
+    var x = this.coordinates[0];
+    var y = this.coordinates[1];
+    return [
+      [x, y - 1],
+      [x, y + 1],
+      [x - 1, y],
+      [x + 1, y],
+      [x - 1, y - 1],
+      [x + 1, y - 1],
+      [x + 1, y + 1],
+      [x - 1, y + 1]
     ];
   }
 }

@@ -23,7 +23,7 @@ class options extends Phaser.Scene {
     this.itemSelect()
 
 
-    var removeData = this.add.bitmapText(game.config.width / 2, 1050, 'topaz', 'Reset Data', 50).setOrigin(.5).setTint(0x000000).setInteractive();
+    var removeData = this.add.bitmapText(175, 1200, 'topaz', 'Reset Data', 40).setOrigin(.5).setTint(0x000000).setInteractive();
     this.end.add(removeData)
     removeData.on('pointerdown', function () {
       removeData.setText('Data Reset')

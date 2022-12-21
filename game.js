@@ -315,12 +315,27 @@ class playGame extends Phaser.Scene {
 
       }
       if (this.allowRover) {
-        var rovers = this.board.findRovers()
-        console.log(rovers)
-        if (rovers.length > 0) {
-          var n = this.board.randomNeighbor(rovers[0])
-          this.board.moveRover(rovers[0], n)
+        /*  var rovers = this.board.findRovers()
+         console.log(rovers)
+         if (rovers.length > 0) {
+           //var n = this.board.randomNeighbor(rovers[0])
+           for (var i = 0; i < rovers.length; i++) {
+             this.board.moveRover(rovers[i])
+           }
+ 
+ 
+         } */
+        if (this.board.extraDots.length > 0) {
+          var neighbors = []
+          for (var i = 0; i < this.board.extraDots.length; i++) {
+            var dot = this.board.findDot(this.board.extraDots[i])
+            neighbors.push(...dot.neighborsBox())
 
+          }
+          console.log(neighbors)
+          this.board.selectedDots = neighbors
+          //this.explodeAll(neighbors)
+          this.board.destroyDots()
         }
 
       }
@@ -351,18 +366,7 @@ class playGame extends Phaser.Scene {
       }
     }
     if (this.allowGem) {
-      var placed = 0
-      while (placed < this.gemStartCount) {
-        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
-        var randY = Phaser.Math.Between(0, this.boardHeight - 1)
-        if (this.board.dots[randX][randY].type < 6) {
-          this.board.dots[randX][randY].selectable = false
-
-          this.board.dots[randX][randY].type = 14
-          this.board.dots[randX][randY].image.setTexture('gem')
-          placed++
-        }
-      }
+      this.board.addGem(this.gemStartCount)
     }
     if (this.allowSlime) {
       this.board.underlay[0][0].selectable = false
@@ -378,63 +382,19 @@ class playGame extends Phaser.Scene {
       this.board.tally[13]++
     }
     if (this.allowWild) {
-      console.log('making rovers')
-      var placedR = 0
-      while (placedR < this.wildStartCount) {
-        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
-        var randY = Phaser.Math.Between(0, this.boardHeight - 1)
-        if (this.board.dots[randX][randY].type < 6) {
-
-          this.board.dots[randX][randY].color = -1
-          this.board.dots[randX][randY].type = 12
-          this.board.dots[randX][randY].image.setTexture('wild').clearTint()
-          placedR++
-        }
-      }
+      this.board.addWild(this.wildStartCount)
     }
 
     if (this.allowRover) {
-      console.log('making rovers')
-      var placedR = 0
-      while (placedR < this.roverStartCount) {
-        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
-        var randY = Phaser.Math.Between(0, this.boardHeight - 2)
-        if (this.board.dots[randX][randY].type < 6) {
-          this.board.dots[randX][randY].strength = 3
-          this.board.dots[randX][randY].type = 11
-          this.board.dots[randX][randY].image.setTexture('rover', 3)
-          placedR++
-        }
-      }
+      this.board.addRover(this.roverStartCount)
     }
 
     if (this.allowBomb) {
-      console.log('making bombs')
-      var placedB = 0
-      while (placedB < this.bombStartCount) {
-        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
-        var randY = Phaser.Math.Between(0, this.boardHeight - 2)
-        if (this.board.dots[randX][randY].type < 6) {
-          this.board.dots[randX][randY].strength = 3
-          this.board.dots[randX][randY].type = 8
-          this.board.dots[randX][randY].image.setTexture('bomb', 3)
-          placedB++
-        }
-      }
+      this.board.addBomb(this.bombStartCount)
     }
     if (this.allowDrop) {
-      var placed = 0
-      while (placed < this.dropStartCount) {
-        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
-        var randY = Phaser.Math.Between(0, this.boardHeight - 2)
-        if (this.board.dots[randX][randY].type < 6) {
-          this.board.dots[randX][randY].selectable = false
-          this.board.dots[randX][randY].color = 6
-          this.board.dots[randX][randY].type = 7
-          this.board.dots[randX][randY].image.setTexture('arrow').setTint(0xF1C40F)
-          placed++
-        }
-      }
+      this.board.addDrop(this.dropStartCount)
+
     }
     if (this.allowIce) {
       var placed = 0
