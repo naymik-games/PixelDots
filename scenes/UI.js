@@ -117,6 +117,8 @@ class UI extends Phaser.Scene {
         var testDot = this.add.image(tX, tIconY, 'gem').setTint(0xBAB6B6)
       } else if (i == 15) {
         var testDot = this.add.image(tX, tIconY, 'fire').setTint(0xff0000)
+      } else if (i == 16) {
+        var testDot = this.add.image(tX, tIconY, 'balls', 3).setTint(0xB2BABB)
       } else {
         var testDot = this.add.image(tX, tIconY, 'dot2').setTint(0x333333)
       }
@@ -539,6 +541,22 @@ class UI extends Phaser.Scene {
         i++;
         j++;
       }
+      if (key == 'balls') {
+        if (i > 2) {
+          y = 140;
+          x = i - 3;
+        } else {
+          x = i;
+        }
+        this.ballIcon = this.add.image(xOffsetT + x * xSpace, y, 'balls', 3).setScale(.35).setAlpha(1).setTint(0xb8b8b8);
+        this.ballText = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', '0', labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);
+        this.ballGoal = value;
+        this.ballText.setText(value);
+        this.ballWin = true;
+        this.winCount++;
+        i++;
+        j++;
+      }
       //console.log(key + ' ' + value); // "a 5", "b 7", "c 9"
 
     });
@@ -674,6 +692,15 @@ class UI extends Phaser.Scene {
         this.gemGoal = -100
         this.winComplete++;
         this.gemWin = false;
+      }
+    }
+    if (this.ballWin) {
+      this.ballText.setText(this.ballGoal - this.Main.board.tally[16]);
+      if (this.Main.board.tally[16] >= this.ballGoal) {
+        this.tweenCount(this.ballText, this.ballIcon);
+        this.ballGoal = -100
+        this.winComplete++;
+        this.ballWin = false;
       }
     }
     if (this.winCount == this.winComplete) {

@@ -60,6 +60,8 @@ class playGame extends Phaser.Scene {
     this.gemStartCount = levelConfig.gS
     this.allowFire = levelConfig.aF
     this.fireStartCount = levelConfig.fS
+    this.allowBalls = levelConfig.aBall
+    this.ballsStartCount = levelConfig.ballS
 
     let dotAllColors = colorGroups[gameSettings.colorSet]
     if ((gameMode == 0 || gameMode == 1) && lbFlag == false) {
@@ -143,6 +145,7 @@ class playGame extends Phaser.Scene {
     this.lineArray = []
     this.rectArray = []
     this.board.extraDots = []
+    this.board.balls = []
     let row = Math.floor((pointer.y - this.yOffset) / this.dotSize);
     let col = Math.floor((pointer.x - this.xOffset) / this.dotSize);
     if (!this.board.validCoordinates(col, row)) { return }
@@ -289,6 +292,29 @@ class playGame extends Phaser.Scene {
 
         }
       }
+      if (this.allowBalls) {
+        if (this.board.balls.length > 0) {
+          var neighbors = []
+          for (var i = 0; i < this.board.balls.length; i++) {
+            var dot = this.board.findDot(this.board.balls[i])
+            //console.log(dot.neighborsBox())
+            var box = dot.neighborsBox()
+            for (var j = 0; j < box.length; j++) {
+              if (!neighbors.includes(box[j])) {
+                neighbors.push(box[j])
+              }
+
+            }
+
+
+          }
+          console.log(neighbors)
+          this.board.selectedDots = neighbors
+          // this.explodeAll(neighbors)
+          this.board.destroyDots()
+
+        }
+      }
       //////////
       if (this.allowFire && this.board.growFire) {
         var fires = this.board.findFire()
@@ -394,6 +420,10 @@ class playGame extends Phaser.Scene {
     }
     if (this.allowDrop) {
       this.board.addDrop(this.dropStartCount)
+
+    }
+    if (this.allowBalls) {
+      this.board.addBalls(this.ballsStartCount)
 
     }
     if (this.allowIce) {

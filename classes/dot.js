@@ -24,6 +24,7 @@
 13 slime
 14 geme
 15 fire
+16 balls
 */
 class Dot {
   constructor(id, x, y, color, board, dotSize) {
@@ -101,6 +102,9 @@ class Dot {
     if (this.board.scene.allowFire) {
       this.extinguishNeighborFire()
     }
+    if (this.board.scene.allowBalls) {
+      this.hitNeighborBall()
+    }
   }
   destroy() {
     if (this.strength == 0) {
@@ -124,6 +128,11 @@ class Dot {
         this.board.scene.explode(this.coordinates[0], this.coordinates[1])
         this.board.gems.push(this.coordinates)
       }
+      /*  if (this.type == 16) {
+         this.board.scene.explode(this.coordinates[0], this.coordinates[1])
+         this.board.balls.push(this.coordinates)
+         this.board.tally[16]++
+       } */
     } else {
       this.image.setAlpha(1)
     }
@@ -180,6 +189,30 @@ class Dot {
     this.board.createNewDot(x);
   }
   ///////
+  hitNeighborBall() {
+    var n = this.neighbors()
+    var isFire = false
+    for (let i = 0; i < n.length; i++) {
+      const element = n[i];
+
+      if (this.board.dots[element.coordinates[0]][element.coordinates[1]].type == 16) {
+        this.board.dots[element.coordinates[0]][element.coordinates[1]].strength--
+        this.board.dots[element.coordinates[0]][element.coordinates[1]].image.setFrame(this.board.dots[element.coordinates[0]][element.coordinates[1]].strength)
+        if (this.board.dots[element.coordinates[0]][element.coordinates[1]].strength == 0) {
+          this.board.balls.push(this.coordinates)
+          this.board.tally[16]++
+          // this.board.scene.damageEmit(this.board.dots[element.coordinates[0]][element.coordinates[1]].image.x, this.board.dots[element.coordinates[0]][element.coordinates[1]].image.y)
+          this.board.scene.explode(element.coordinates[0], element.coordinates[1])
+          var num = Phaser.Math.Between(0, dotColors.length - 1);
+          this.board.dots[element.coordinates[0]][element.coordinates[1]].type = num
+          this.board.dots[element.coordinates[0]][element.coordinates[1]].color = num
+          this.board.dots[element.coordinates[0]][element.coordinates[1]].image.setTexture('dot2')
+          this.board.dots[element.coordinates[0]][element.coordinates[1]].image.setTint(dotColors[num])
+          this.board.dots[element.coordinates[0]][element.coordinates[1]].selectable = true
+        }
+      }
+    }
+  }
   extinguishNeighborFire() {
     var n = this.neighbors()
     var isFire = false

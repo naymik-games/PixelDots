@@ -266,6 +266,8 @@ class selectGame extends Phaser.Scene {
         value = levels[level].w * levels[level].h
       } else if (key == 'gem') {
         var icon = this.add.image(xOffsetT + x * xSpace, y, 'gem').setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
+      } else if (key == 'balls') {
+        var icon = this.add.image(xOffsetT + x * xSpace, y, 'balls', 3).setScale(iconScale).setAlpha(1).setTint(0xb8b8b8);
       }
 
       var text = this.add.bitmapText(xOffsetI + x * xSpace, y, 'topaz', value, labelSize).setOrigin(0, .5).setTint(labelColor).setAlpha(1);

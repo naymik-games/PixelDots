@@ -10,11 +10,12 @@ class Board {
     this.selectedColor = null
     this.selectedDots = []
     this.gems = []
+    this.balls = []
     this.squareCompleted = false
     this.numColors = numColors
     this.redrawTheseColumns = {};
     this.growFire = true;
-    this.tally = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    this.tally = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     //this.specialTally = [0, 0, 0, 0]
     this.moves = 0
     //this.squareTally = 0
@@ -91,6 +92,8 @@ class Board {
       this.setGem(x, 0)
     } else if (this.scene.allowRover && Phaser.Math.Between(1, 100) < 9 && this.findCount(11) < this.scene.roverStartCount) {
       this.setRover(x, 0)
+    } else if (this.scene.allowBalls && Phaser.Math.Between(1, 100) < 9 && this.findCount(16) < this.scene.ballsStartCount) {
+      this.setBall(x, 0)
     }
     //   dot.image.displayWidth = this.scene.spriteSize
     //  dot.image.displayHeight = this.scene.spriteSize
@@ -633,5 +636,23 @@ class Board {
     this.dots[randX][randY].strength = 3
     this.dots[randX][randY].type = 11
     this.dots[randX][randY].image.setTexture('rover', 3)
+  }
+  addBalls(count) {
+    var placedR = 0
+    while (placedR < count) {
+      var randX = Phaser.Math.Between(0, this.width - 1)
+      var randY = Phaser.Math.Between(0, this.height - 1)
+      if (this.dots[randX][randY].type < 6) {
+        this.setBall(randX, randY)
+        placedR++
+      }
+    }
+  }
+  setBall(randX, randY) {
+    this.dots[randX][randY].selectable = false
+    this.dots[randX][randY].color = 6
+    this.dots[randX][randY].strength = 3
+    this.dots[randX][randY].type = 16
+    this.dots[randX][randY].image.setTexture('balls', 3).setTint(0xB2BABB)
   }
 }

@@ -33,7 +33,7 @@ class levelBuilder extends Phaser.Scene {
     this.slimeOn = defaultGame.aSl
     this.gemOn = defaultGame.aG
     this.fireOn = defaultGame.aF
-
+    this.ballOn = defaultGame.aBall
 
     var colorText = this.add.bitmapText(75, 395, 'topaz', 'COLORS', 50).setOrigin(0, 1).setTint(0xffffff);
     this.itemSelect()
@@ -52,6 +52,7 @@ class levelBuilder extends Phaser.Scene {
     var toggleR2 = 700
     var toggleR3 = 800
     var toggleR4 = 900
+    var toggleR5 = 1000
 
     //allow rovers
     var rover = this.add.bitmapText(toggleC1 - 25, toggleR3, 'topaz', 'ROVER', 50).setOrigin(1, .5).setTint(0xffffff);
@@ -92,6 +93,11 @@ class levelBuilder extends Phaser.Scene {
     var fire = this.add.bitmapText(toggleC2 - 25, toggleR4, 'topaz', 'FIRE', 50).setOrigin(1, .5).setTint(0xffffff);
     this.fireSwitch = this.add.image(toggleC2 + 25, toggleR4, 'switch', (this.fireOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
     this.fireSwitch.on('pointerdown', this.fireToggle, this)
+
+    //allow balls
+    var ball = this.add.bitmapText(toggleC1 - 25, toggleR5, 'topaz', 'BALLS', 50).setOrigin(1, .5).setTint(0xffffff);
+    this.ballSwitch = this.add.image(toggleC1 + 25, toggleR5, 'switch', (this.ballOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
+    this.ballSwitch.on('pointerdown', this.ballToggle, this)
 
     this.movesSelect()
     var backIcon = this.add.image(game.config.width / 2, 1550, 'menu_icons', 5).setInteractive()
@@ -211,6 +217,19 @@ class levelBuilder extends Phaser.Scene {
       defaultGame.aF = this.fireOn
       defaultGame.fS = Phaser.Math.Between(5, 8)
       this.fireSwitch.setFrame(1)
+    }
+  }
+  ballToggle() {
+    if (this.ballOn) {
+      this.ballOn = false
+      defaultGame.aBall = this.ballOn
+
+      this.ballSwitch.setFrame(0)
+    } else {
+      this.ballOn = true
+      defaultGame.aBall = this.ballOn
+      defaultGame.ballS = Phaser.Math.Between(5, 8)
+      this.ballSwitch.setFrame(1)
     }
   }
   itemSelect() {
