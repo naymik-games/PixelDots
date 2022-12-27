@@ -149,6 +149,7 @@ class playGame extends Phaser.Scene {
     let row = Math.floor((pointer.y - this.yOffset) / this.dotSize);
     let col = Math.floor((pointer.x - this.xOffset) / this.dotSize);
     if (!this.board.validCoordinates(col, row)) { return }
+    if (this.board.overlay[col][row].type == 10) { return }
     if (this.board.dots[col][row].type == 14) { return }
     console.log(this.board.dots[col][row])
     if (gameMode == 1) {
@@ -177,7 +178,7 @@ class playGame extends Phaser.Scene {
     }
 
     console.log('row ' + row + ' col ' + col)
-    //if (!dot.selectable) { return }
+
     this.board.dots[col][row].activate();
 
     if (this.board.dots[col][row].color == -1) {
@@ -447,24 +448,40 @@ class playGame extends Phaser.Scene {
       }
     }
     if (this.allowBlock) {
-      var placed = 0
-      while (placed < this.blockStartCount) {
-        var randX = Phaser.Math.Between(0, this.boardWidth - 1)
-        var randY = Phaser.Math.Between(0, this.boardHeight - 1)
-        if (this.board.overlay[randX][randY].type < 6) {
-          this.board.overlay[randX][randY].selectable = false
+      if (levelConfig.blocks.length > 0) {
+        for (var i = 0; i < levelConfig.blocks.length; i++) {
+          var block = levelConfig.blocks[i]
+          this.board.overlay[block.x][block.y].selectable = false
 
-          this.board.overlay[randX][randY].type = 10
-          let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
-          let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
-          var block = this.add.image(xpos, ypos, 'block')
-          block.displayWidth = this.spriteSize
-          block.displayHeight = this.spriteSize
-          this.board.overlay[randX][randY].image = block
+          this.board.overlay[block.x][block.y].type = 10
+          let xpos = this.xOffset + this.dotSize * block.x + this.dotSize / 2;
+          let ypos = this.yOffset + this.dotSize * block.y + this.dotSize / 2
+          var block1 = this.add.image(xpos, ypos, 'block').setDepth(2)
+          block1.displayWidth = this.spriteSize
+          block1.displayHeight = this.spriteSize
+          this.board.overlay[block.x][block.y].image = block1
+        }
+      } else {
+        var placed = 0
+        while (placed < this.blockStartCount) {
+          var randX = Phaser.Math.Between(0, this.boardWidth - 1)
+          var randY = Phaser.Math.Between(0, this.boardHeight - 1)
+          if (this.board.overlay[randX][randY].type < 6) {
+            this.board.overlay[randX][randY].selectable = false
 
-          placed++
+            this.board.overlay[randX][randY].type = 10
+            let xpos = this.xOffset + this.dotSize * randX + this.dotSize / 2;
+            let ypos = this.yOffset + this.dotSize * randY + this.dotSize / 2
+            var block = this.add.image(xpos, ypos, 'block').setDepth(2)
+            block.displayWidth = this.spriteSize
+            block.displayHeight = this.spriteSize
+            this.board.overlay[randX][randY].image = block
+
+            placed++
+          }
         }
       }
+
     }
 
 

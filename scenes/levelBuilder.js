@@ -34,6 +34,7 @@ class levelBuilder extends Phaser.Scene {
     this.gemOn = defaultGame.aG
     this.fireOn = defaultGame.aF
     this.ballOn = defaultGame.aBall
+    this.blockOn = defaultGame.aBl
 
     var colorText = this.add.bitmapText(75, 395, 'topaz', 'COLORS', 50).setOrigin(0, 1).setTint(0xffffff);
     this.itemSelect()
@@ -98,6 +99,11 @@ class levelBuilder extends Phaser.Scene {
     var ball = this.add.bitmapText(toggleC1 - 25, toggleR5, 'topaz', 'BALLS', 50).setOrigin(1, .5).setTint(0xffffff);
     this.ballSwitch = this.add.image(toggleC1 + 25, toggleR5, 'switch', (this.ballOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
     this.ballSwitch.on('pointerdown', this.ballToggle, this)
+
+    //allow blocks
+    var block = this.add.bitmapText(toggleC2 - 25, toggleR5, 'topaz', 'BLOCKS', 50).setOrigin(1, .5).setTint(0xffffff);
+    this.blockSwitch = this.add.image(toggleC2 + 25, toggleR5, 'switch', (this.blockOn) ? 1 : 0).setOrigin(0, .5).setInteractive().setScale(.9)
+    this.blockSwitch.on('pointerdown', this.blockToggle, this)
 
     this.movesSelect()
     var backIcon = this.add.image(game.config.width / 2, 1550, 'menu_icons', 5).setInteractive()
@@ -230,6 +236,19 @@ class levelBuilder extends Phaser.Scene {
       defaultGame.aBall = this.ballOn
       defaultGame.ballS = Phaser.Math.Between(5, 8)
       this.ballSwitch.setFrame(1)
+    }
+  }
+  blockToggle() {
+    if (this.blockOn) {
+      this.blockOn = false
+      defaultGame.aBl = this.blockOn
+
+      this.blockSwitch.setFrame(0)
+    } else {
+      this.blockOn = true
+      defaultGame.aBl = this.blockOn
+      defaultGame.blS = Phaser.Math.Between(5, 8)
+      this.blockSwitch.setFrame(1)
     }
   }
   itemSelect() {
