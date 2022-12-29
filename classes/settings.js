@@ -128,18 +128,10 @@ let defaultGame = {
 }
 
 let levels = [
-  {
-    id: 0, w: 8, h: 12, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: true, blS: 2, aR: false, rS: 1, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: false, fS: 3, aBall: false, ballS: 3, square: true, win: { color0: 10, color1: 10, }, blocks: [{ "x": 1, "y": 2 }, { "x": 1, "y": 3 }]
-  },
-  {
-    id: 1, w: 6, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 2, aF: false, fS: 3, aBall: true, ballS: 3, square: true, win: { color0: 10, color1: 10, balls: 2 }, blocks: []
-  },
-  {
-    id: 2, w: 6, h: 10, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: true, fS: 7, aBall: false, ballS: 3, square: true, win: { color2: 10, color3: 10 }, blocks: []
-  },
-  {
-    id: 3, w: 4, h: 8, mL: 25, c: 5, aD: false, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: false, fS: 3, aBall: false, ballS: 3, square: true, win: { color4: 10, color2: 10 }, blocks: []
-  },
+  { id: 0, w: 6, h: 6, mL: 20, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 10, color2: 10, color4: 10, }, blocks: [] },
+  { id: 1, w: 6, h: 6, mL: 20, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 10, color2: 10, color3: 10, color4: 10, }, blocks: [] },
+  { id: 2, w: 6, h: 6, mL: 20, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 10, color2: 10, color4: 10, square: 2, }, blocks: [] },
+  { id: 3, w: 6, h: 6, mL: 15, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color2: 10, color4: 10, }, blocks: [] },
   {
     id: 4, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: false, fS: 3, aBall: false, ballS: 3, square: true, win: { color4: 10, color2: 10, drop: 4 }, blocks: []
   },
