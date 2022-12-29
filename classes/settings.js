@@ -132,10 +132,13 @@ let levels = [
   { id: 1, w: 6, h: 6, mL: 20, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 10, color2: 10, color3: 10, color4: 10, }, blocks: [] },
   { id: 2, w: 6, h: 6, mL: 20, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 10, color2: 10, color4: 10, square: 2, }, blocks: [] },
   { id: 3, w: 6, h: 6, mL: 15, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color2: 10, color4: 10, }, blocks: [] },
-  {
-    id: 4, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: false, fS: 3, aBall: false, ballS: 3, square: true, win: { color4: 10, color2: 10, drop: 4 }, blocks: []
-  },
-  {
-    id: 5, w: 6, h: 8, mL: 25, c: 5, aD: true, dS: 5, aB: false, bS: 5, aI: false, iS: 7, aBl: false, blS: 5, aR: false, rS: 0, aW: false, wS: 3, aSl: false, aG: false, gS: 3, aF: false, fS: 3, aBall: false, ballS: 3, square: true, win: { color4: 10, color2: 10, drop: 4 }, blocks: []
-  }
+  { id: 4, w: 6, h: 6, mL: 10, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color2: 10, color4: 10, square: 1, }, blocks: [] },
+  { id: 5, w: 6, h: 6, mL: 20, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 20, color2: 20, color4: 20, }, blocks: [] },
+  { id: 6, w: 6, h: 6, mL: 20, c: 6, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color0: 10, color3: 10, color4: 10, }, blocks: [] },
+  { id: 7, w: 6, h: 6, mL: 25, c: 6, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color0: 10, color3: 10, color4: 10, square: 3, }, blocks: [] },
+  { id: 8, w: 6, h: 6, mL: 15, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 10, color3: 10, color4: 10, }, blocks: [] },
+  { id: 9, w: 6, h: 7, mL: 15, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 10, color3: 10, color4: 10, square: 3, }, blocks: [] },
+  { id: 10, w: 6, h: 7, mL: 15, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 10, color3: 10, color4: 10, square: 5, }, blocks: [] },
+  { id: 11, w: 6, h: 7, mL: 20, c: 5, aD: false, dS: 0, aB: false, bS: 0, aI: false, iS: 0, aBl: false, blS: 0, aR: false, rS: 0, aW: false, wS: 0, aSl: false, aG: false, gS: 0, aF: false, fS: 0, aBall: false, ballS: 0, square: true, win: { color1: 20, color2: 20, color3: 20, color4: 20, color5: 20, square: 5, }, blocks: [] },
+
 ]
